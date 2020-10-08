@@ -1,0 +1,558 @@
+basePath: /api/v1
+definitions:
+  ent.Drug:
+    properties:
+      Name:
+        description: Name holds the value of the "Name" field.
+        type: string
+      edges:
+        $ref: '#/definitions/ent.DrugEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the DrugQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      value:
+        description: Value holds the value of the "value" field.
+        type: integer
+    type: object
+  ent.DrugEdges:
+    properties:
+      requisitions:
+        description: Requisitions holds the value of the requisitions edge.
+        items:
+          $ref: '#/definitions/ent.Requisition'
+        type: array
+    type: object
+  ent.RegisterStore:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.RegisterStoreEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the RegisterStoreQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      name:
+        description: Name holds the value of the "name" field.
+        type: string
+    type: object
+  ent.RegisterStoreEdges:
+    properties:
+      requisitions:
+        description: Requisitions holds the value of the requisitions edge.
+        items:
+          $ref: '#/definitions/ent.Requisition'
+        type: array
+    type: object
+  ent.Requisition:
+    properties:
+      added_time:
+        description: AddedTime holds the value of the "added_time" field.
+        type: string
+      edges:
+        $ref: '#/definitions/ent.RequisitionEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the RequisitionQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+    type: object
+  ent.RequisitionEdges:
+    properties:
+      drug:
+        $ref: '#/definitions/ent.Drug'
+        description: Drug holds the value of the drug edge.
+        type: object
+      registerstore:
+        $ref: '#/definitions/ent.RegisterStore'
+        description: Registerstore holds the value of the registerstore edge.
+        type: object
+      user:
+        $ref: '#/definitions/ent.User'
+        description: User holds the value of the user edge.
+        type: object
+    type: object
+  ent.User:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.UserEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the UserQuery when eager-loading is set.
+        type: object
+      email:
+        description: Email holds the value of the "email" field.
+        type: string
+      id:
+        description: ID of the ent.
+        type: integer
+      name:
+        description: Name holds the value of the "name" field.
+        type: string
+      password:
+        description: Password holds the value of the "password" field.
+        type: string
+    type: object
+  ent.UserEdges:
+    properties:
+      requisitions:
+        description: Requisitions holds the value of the requisitions edge.
+        items:
+          $ref: '#/definitions/ent.Requisition'
+        type: array
+    type: object
+  gin.H:
+    additionalProperties: true
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for SUT SE 2563
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: SUT SA Example API
+  version: "1.0"
+paths:
+  /Drug:
+    get:
+      description: list drug entities
+      operationId: list-drug
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Drug'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List drug entities
+  /Drug/{id}:
+    get:
+      description: get Drug by ID
+      operationId: get-Drug
+      parameters:
+      - description: Drug ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Drug'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a Drug entity by ID
+  /Requisition:
+    get:
+      description: list RequisitionRequisition entities
+      operationId: list-RequisitionRequisition
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Requisition'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List RequisitionRequisition entities
+  /Requisitions/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update Requisition by ID
+      operationId: update-Requisition
+      parameters:
+      - description: Requisition ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Requisition entity
+        in: body
+        name: Requisition
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Requisition'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Requisition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a Requisition entity by ID
+  /RequisitionsRequisition/{id}:
+    delete:
+      description: get Requisition by ID
+      operationId: delete-Requisition
+      parameters:
+      - description: Requisition ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a Requisition entity by ID
+  /RequisitionsRequisitionRequisition/{id}:
+    get:
+      description: get Requisition by ID
+      operationId: get-Requisition
+      parameters:
+      - description: Requisition ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Requisition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a Requisition entity by ID
+  /drugs:
+    post:
+      consumes:
+      - application/json
+      description: Create drug
+      operationId: create-drug
+      parameters:
+      - description: Drug entity
+        in: body
+        name: Drug
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Drug'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Drug'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create drug
+  /registerstores:
+    get:
+      description: list registerstore entities
+      operationId: list-registerstore
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.RegisterStore'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List registerstore entities
+    post:
+      consumes:
+      - application/json
+      description: Create registerstore
+      operationId: create-registerstore
+      parameters:
+      - description: RegisterStore entity
+        in: body
+        name: Drug
+        required: true
+        schema:
+          $ref: '#/definitions/ent.RegisterStore'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.RegisterStore'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create registerstore
+  /registerstores/{id}:
+    get:
+      description: get registerStore by ID
+      operationId: get-registerStore
+      parameters:
+      - description: registerstore ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.RegisterStore'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a registerStore entity by ID
+  /requisitions:
+    post:
+      consumes:
+      - application/json
+      description: Create Requisition
+      operationId: create-Requisition
+      parameters:
+      - description: Requisition entity
+        in: body
+        name: Requisition
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Requisition'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Requisition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Requisition
+  /users:
+    get:
+      description: list user entities
+      operationId: list-user
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List user entities
+  /users/{id}:
+    get:
+      description: get user by ID
+      operationId: get-user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a user entity by ID
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+  OAuth2AccessCode:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: accessCode
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Application:
+    flow: application
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Implicit:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: implicit
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    type: oauth2
+  OAuth2Password:
+    flow: password
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      read: ' Grants read access'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+swagger: "2.0"
