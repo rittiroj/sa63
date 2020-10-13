@@ -9,8 +9,6 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldValue holds the string denoting the value field in the database.
-	FieldValue = "value"
 
 	// EdgeRequisitions holds the string denoting the requisitions edge name in mutations.
 	EdgeRequisitions = "requisitions"
@@ -30,12 +28,9 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldName,
-	FieldValue,
 }
 
 var (
-	// NameValidator is a validator for the "Name" field. It is called by the builders before save.
+	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// ValueValidator is a validator for the "value" field. It is called by the builders before save.
-	ValueValidator func(int) error
 )

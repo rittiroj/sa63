@@ -7,6 +7,8 @@ const (
 	Label = "requisition"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldValue holds the string denoting the value field in the database.
+	FieldValue = "value"
 	// FieldAddedTime holds the string denoting the added_time field in the database.
 	FieldAddedTime = "added_time"
 
@@ -45,6 +47,7 @@ const (
 // Columns holds all SQL columns for requisition fields.
 var Columns = []string{
 	FieldID,
+	FieldValue,
 	FieldAddedTime,
 }
 
@@ -54,3 +57,8 @@ var ForeignKeys = []string{
 	"registerstore_id",
 	"user_id",
 }
+
+var (
+	// ValueValidator is a validator for the "value" field. It is called by the builders before save.
+	ValueValidator func(int) error
+)

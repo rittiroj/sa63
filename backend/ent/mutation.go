@@ -38,9 +38,7 @@ type DrugMutation struct {
 	op                  Op
 	typ                 string
 	id                  *int
-	_Name               *string
-	value               *int
-	addvalue            *int
+	name                *string
 	clearedFields       map[string]struct{}
 	requisitions        map[int]struct{}
 	removedrequisitions map[int]struct{}
@@ -127,21 +125,21 @@ func (m *DrugMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetName sets the Name field.
+// SetName sets the name field.
 func (m *DrugMutation) SetName(s string) {
-	m._Name = &s
+	m.name = &s
 }
 
-// Name returns the Name value in the mutation.
+// Name returns the name value in the mutation.
 func (m *DrugMutation) Name() (r string, exists bool) {
-	v := m._Name
+	v := m.name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldName returns the old Name value of the Drug.
+// OldName returns the old name value of the Drug.
 // If the Drug object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
@@ -159,66 +157,9 @@ func (m *DrugMutation) OldName(ctx context.Context) (v string, err error) {
 	return oldValue.Name, nil
 }
 
-// ResetName reset all changes of the "Name" field.
+// ResetName reset all changes of the "name" field.
 func (m *DrugMutation) ResetName() {
-	m._Name = nil
-}
-
-// SetValue sets the value field.
-func (m *DrugMutation) SetValue(i int) {
-	m.value = &i
-	m.addvalue = nil
-}
-
-// Value returns the value value in the mutation.
-func (m *DrugMutation) Value() (r int, exists bool) {
-	v := m.value
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldValue returns the old value value of the Drug.
-// If the Drug object wasn't provided to the builder, the object is fetched
-// from the database.
-// An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *DrugMutation) OldValue(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldValue is allowed only on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldValue requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldValue: %w", err)
-	}
-	return oldValue.Value, nil
-}
-
-// AddValue adds i to value.
-func (m *DrugMutation) AddValue(i int) {
-	if m.addvalue != nil {
-		*m.addvalue += i
-	} else {
-		m.addvalue = &i
-	}
-}
-
-// AddedValue returns the value that was added to the value field in this mutation.
-func (m *DrugMutation) AddedValue() (r int, exists bool) {
-	v := m.addvalue
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetValue reset all changes of the "value" field.
-func (m *DrugMutation) ResetValue() {
-	m.value = nil
-	m.addvalue = nil
+	m.name = nil
 }
 
 // AddRequisitionIDs adds the requisitions edge to Requisition by ids.
@@ -277,12 +218,9 @@ func (m *DrugMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *DrugMutation) Fields() []string {
-	fields := make([]string, 0, 2)
-	if m._Name != nil {
+	fields := make([]string, 0, 1)
+	if m.name != nil {
 		fields = append(fields, drug.FieldName)
-	}
-	if m.value != nil {
-		fields = append(fields, drug.FieldValue)
 	}
 	return fields
 }
@@ -294,8 +232,6 @@ func (m *DrugMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case drug.FieldName:
 		return m.Name()
-	case drug.FieldValue:
-		return m.Value()
 	}
 	return nil, false
 }
@@ -307,8 +243,6 @@ func (m *DrugMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case drug.FieldName:
 		return m.OldName(ctx)
-	case drug.FieldValue:
-		return m.OldValue(ctx)
 	}
 	return nil, fmt.Errorf("unknown Drug field %s", name)
 }
@@ -325,13 +259,6 @@ func (m *DrugMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
-	case drug.FieldValue:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetValue(v)
-		return nil
 	}
 	return fmt.Errorf("unknown Drug field %s", name)
 }
@@ -339,21 +266,13 @@ func (m *DrugMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented
 // or decremented during this mutation.
 func (m *DrugMutation) AddedFields() []string {
-	var fields []string
-	if m.addvalue != nil {
-		fields = append(fields, drug.FieldValue)
-	}
-	return fields
+	return nil
 }
 
 // AddedField returns the numeric value that was in/decremented
 // from a field with the given name. The second value indicates
 // that this field was not set, or was not define in the schema.
 func (m *DrugMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case drug.FieldValue:
-		return m.AddedValue()
-	}
 	return nil, false
 }
 
@@ -362,13 +281,6 @@ func (m *DrugMutation) AddedField(name string) (ent.Value, bool) {
 // type mismatch the field type.
 func (m *DrugMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case drug.FieldValue:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddValue(v)
-		return nil
 	}
 	return fmt.Errorf("unknown Drug numeric field %s", name)
 }
@@ -399,9 +311,6 @@ func (m *DrugMutation) ResetField(name string) error {
 	switch name {
 	case drug.FieldName:
 		m.ResetName()
-		return nil
-	case drug.FieldValue:
-		m.ResetValue()
 		return nil
 	}
 	return fmt.Errorf("unknown Drug field %s", name)
@@ -865,6 +774,8 @@ type RequisitionMutation struct {
 	op                   Op
 	typ                  string
 	id                   *int
+	value                *int
+	addvalue             *int
 	added_time           *time.Time
 	clearedFields        map[string]struct{}
 	user                 *int
@@ -954,6 +865,63 @@ func (m *RequisitionMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetValue sets the value field.
+func (m *RequisitionMutation) SetValue(i int) {
+	m.value = &i
+	m.addvalue = nil
+}
+
+// Value returns the value value in the mutation.
+func (m *RequisitionMutation) Value() (r int, exists bool) {
+	v := m.value
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldValue returns the old value value of the Requisition.
+// If the Requisition object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RequisitionMutation) OldValue(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldValue is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldValue requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldValue: %w", err)
+	}
+	return oldValue.Value, nil
+}
+
+// AddValue adds i to value.
+func (m *RequisitionMutation) AddValue(i int) {
+	if m.addvalue != nil {
+		*m.addvalue += i
+	} else {
+		m.addvalue = &i
+	}
+}
+
+// AddedValue returns the value that was added to the value field in this mutation.
+func (m *RequisitionMutation) AddedValue() (r int, exists bool) {
+	v := m.addvalue
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetValue reset all changes of the "value" field.
+func (m *RequisitionMutation) ResetValue() {
+	m.value = nil
+	m.addvalue = nil
 }
 
 // SetAddedTime sets the added_time field.
@@ -1124,7 +1092,10 @@ func (m *RequisitionMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *RequisitionMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 2)
+	if m.value != nil {
+		fields = append(fields, requisition.FieldValue)
+	}
 	if m.added_time != nil {
 		fields = append(fields, requisition.FieldAddedTime)
 	}
@@ -1136,6 +1107,8 @@ func (m *RequisitionMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *RequisitionMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case requisition.FieldValue:
+		return m.Value()
 	case requisition.FieldAddedTime:
 		return m.AddedTime()
 	}
@@ -1147,6 +1120,8 @@ func (m *RequisitionMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *RequisitionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case requisition.FieldValue:
+		return m.OldValue(ctx)
 	case requisition.FieldAddedTime:
 		return m.OldAddedTime(ctx)
 	}
@@ -1158,6 +1133,13 @@ func (m *RequisitionMutation) OldField(ctx context.Context, name string) (ent.Va
 // type mismatch the field type.
 func (m *RequisitionMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case requisition.FieldValue:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetValue(v)
+		return nil
 	case requisition.FieldAddedTime:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -1172,13 +1154,21 @@ func (m *RequisitionMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented
 // or decremented during this mutation.
 func (m *RequisitionMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addvalue != nil {
+		fields = append(fields, requisition.FieldValue)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was in/decremented
 // from a field with the given name. The second value indicates
 // that this field was not set, or was not define in the schema.
 func (m *RequisitionMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case requisition.FieldValue:
+		return m.AddedValue()
+	}
 	return nil, false
 }
 
@@ -1187,6 +1177,13 @@ func (m *RequisitionMutation) AddedField(name string) (ent.Value, bool) {
 // type mismatch the field type.
 func (m *RequisitionMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case requisition.FieldValue:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddValue(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Requisition numeric field %s", name)
 }
@@ -1215,6 +1212,9 @@ func (m *RequisitionMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *RequisitionMutation) ResetField(name string) error {
 	switch name {
+	case requisition.FieldValue:
+		m.ResetValue()
+		return nil
 	case requisition.FieldAddedTime:
 		m.ResetAddedTime()
 		return nil

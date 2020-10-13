@@ -19,6 +19,8 @@ type Requisition struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Value holds the value of the "value" field.
+	Value int `json:"value,omitempty"`
 	// AddedTime holds the value of the "added_time" field.
 	AddedTime time.Time `json:"added_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -88,6 +90,7 @@ func (e RequisitionEdges) DrugOrErr() (*Drug, error) {
 func (*Requisition) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{}, // id
+		&sql.NullInt64{}, // value
 		&sql.NullTime{},  // added_time
 	}
 }
@@ -113,12 +116,17 @@ func (r *Requisition) assignValues(values ...interface{}) error {
 	}
 	r.ID = int(value.Int64)
 	values = values[1:]
-	if value, ok := values[0].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field added_time", values[0])
+	if value, ok := values[0].(*sql.NullInt64); !ok {
+		return fmt.Errorf("unexpected type %T for field value", values[0])
+	} else if value.Valid {
+		r.Value = int(value.Int64)
+	}
+	if value, ok := values[1].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field added_time", values[1])
 	} else if value.Valid {
 		r.AddedTime = value.Time
 	}
-	values = values[1:]
+	values = values[2:]
 	if len(values) == len(requisition.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field drug_id", value)
@@ -180,6 +188,8 @@ func (r *Requisition) String() string {
 	var builder strings.Builder
 	builder.WriteString("Requisition(")
 	builder.WriteString(fmt.Sprintf("id=%v", r.ID))
+	builder.WriteString(", value=")
+	builder.WriteString(fmt.Sprintf("%v", r.Value))
 	builder.WriteString(", added_time=")
 	builder.WriteString(r.AddedTime.Format(time.ANSIC))
 	builder.WriteByte(')')

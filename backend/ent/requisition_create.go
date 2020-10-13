@@ -23,6 +23,12 @@ type RequisitionCreate struct {
 	hooks    []Hook
 }
 
+// SetValue sets the value field.
+func (rc *RequisitionCreate) SetValue(i int) *RequisitionCreate {
+	rc.mutation.SetValue(i)
+	return rc
+}
+
 // SetAddedTime sets the added_time field.
 func (rc *RequisitionCreate) SetAddedTime(t time.Time) *RequisitionCreate {
 	rc.mutation.SetAddedTime(t)
@@ -93,6 +99,14 @@ func (rc *RequisitionCreate) Mutation() *RequisitionMutation {
 
 // Save creates the Requisition in the database.
 func (rc *RequisitionCreate) Save(ctx context.Context) (*Requisition, error) {
+	if _, ok := rc.mutation.Value(); !ok {
+		return nil, &ValidationError{Name: "value", err: errors.New("ent: missing required field \"value\"")}
+	}
+	if v, ok := rc.mutation.Value(); ok {
+		if err := requisition.ValueValidator(v); err != nil {
+			return nil, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+		}
+	}
 	if _, ok := rc.mutation.AddedTime(); !ok {
 		return nil, &ValidationError{Name: "added_time", err: errors.New("ent: missing required field \"added_time\"")}
 	}
@@ -156,6 +170,14 @@ func (rc *RequisitionCreate) createSpec() (*Requisition, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := rc.mutation.Value(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: requisition.FieldValue,
+		})
+		r.Value = value
+	}
 	if value, ok := rc.mutation.AddedTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

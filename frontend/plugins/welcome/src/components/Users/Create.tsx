@@ -1,5 +1,9 @@
-import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+  Content,
+  ContentHeader,
+} from '@backstage/core';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -10,16 +14,22 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
-import { Content } from '@backstage/core';
 import Card from '@material-ui/core/Card';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect, FC } from 'react';
+import { EntUser } from '../../api/models/EntUser';
+import { EntRequisition } from '../../api/models/EntRequisition';
+import { EntRegisterStore } from '../../api/models/EntRegisterStore';
+import { EntDrug } from '../../api/models/EntDrug';
+import { DefaultApi } from '../../api/apis';
+import { Alert } from '@material-ui/lab';
+
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        flexGrow: 1,
-      },
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
     },
     formControl: {
       margin: theme.spacing(1),
@@ -40,44 +50,58 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
     },
-    card: {
-      textAlign: 'center',
-      justifyContent: 'center',
-      alignContent: 'center',
-      height: 705,
-    },
   }),
 );
+interface requisition {
+  user: number;
+  drug: number;
+  registerstore: number;
+  requisition: string;
+}
 
-export default function ButtonAppBar() {
+const Requisition: FC<{}> = () => {
   const classes = useStyles();
-  const [drug, setDrug] = React.useState('');
-  const [stock, setStock] = React.useState('');
-  const [employee, setEmployee] = React.useState('');
-  const [unit, setUnit] = React.useState(0);
+  const http = new DefaultApi();
 
-  const handleChangeDrug = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDrug(event.target.value as string);
+  const [requisition, setRequisition] = React.useState<Partial<requisition>>({});
+  const [drugs, setDrugs] = React.useState<EntDrug[]>([]);
+  const [registerstores, setRegisterstores] = React.useState<EntRegisterStore[]>([]);
+  const [users, setUsers] = React.useState<EntUser[]>([]);
+  const [alert, setAlert] = React.useState(true);
+
+
+  const handleChange = (
+    event: React.ChangeEvent<{ name?: string; value: unknown }>,) => {
+    const name = event.target.name as keyof typeof Requisition;
+    const { value } = event.target;
+    setRequisition({ ...requisition, [name]: value });
   };
 
-  const handleChangeStock = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setStock(event.target.value as string);
+  const getUsers = async () => {
+    const res = await http.listUser({ limit: 10, offset: 0 });
+    setUsers(res);
   };
 
-  const handleChangeEmployee = (
-    event: React.ChangeEvent<{ value: unknown }>,
-  ) => {
-    setEmployee(event.target.value as string);
+  const getDrugs = async () => {
+    const res = await http.listDrug({ limit: 10, offset: 0 });
+    setDrugs(res);
   };
 
-  const handleChangeUnit = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setUnit(event.target.value as number);
+  const getregisterstore = async () => {
+    const res = await http.listRegisterstore({ limit: 10, offset: 0 });
+    setRegisterstores(res);
   };
 
-  const handleSubmit = () => {
-    alert('บันทึกสำเร็จ');
-    console.log(drug, stock, employee, unit);
-  };
+  // Lifecycle Hooks
+  useEffect(() => {
+    getDrugs();
+    getUsers();
+    getregisterstore();
+  }, []);
+
+  function save() {
+    console.log(requisition)
+  }
 
   return (
     <div className={classes.root}>
@@ -90,12 +114,14 @@ export default function ButtonAppBar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Card className={classes.card}>
-        <Content>
-          <Typography variant="h2" className={classes.title}>
-            ใบบันทึกการเบิกยาสำหรับห้องยา
+      <Content>
+        <Typography variant="h2" className={classes.title}>
+          ใบบันทึกการเบิกยาสำหรับห้องยา
           </Typography>
-        </Content>
+
+      </Content>
+      <div className={classes.root}>
+        <form noValidate autoComplete="off"></form>
         <Grid
           container
           direction="column"
@@ -105,16 +131,16 @@ export default function ButtonAppBar() {
           {/* ชื่อยา */}
           <Grid item xs>
             <FormControl className={classes.formControl}>
-              <InputLabel id="demo-simple-select-label">ชื่อยา</InputLabel>
+              <InputLabel >ชื่อยา</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={drug}
-                onChange={handleChangeDrug}
+                value={requisition.drug}
+                onChange={handleChange}
               >
-                <MenuItem value={'para'}>para</MenuItem>
-                <MenuItem value={'ยาแก้ไอ'}>ยาแก้ไอ</MenuItem>
-                <MenuItem value={'ยาแก้แพ้'}>ยาแก้แพ้</MenuItem>
+                {drugs.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           </Grid>
@@ -122,15 +148,16 @@ export default function ButtonAppBar() {
           {/* คลังยา */}
           <Grid item xs>
             <FormControl className={classes.formControl}>
-              <InputLabel id="demo-simple-select-label">คลังยา</InputLabel>
+              <InputLabel>คลังยา</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={stock}
-                onChange={handleChangeStock}
+                value={requisition.registerstore}
+                onChange={handleChange}
               >
-                <MenuItem value={'คลังภายใน'}>คลังภายใน</MenuItem>
-                <MenuItem value={'คลังภายนอก'}>คลังภายนอก</MenuItem>
+                {registerstores.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           </Grid>
@@ -139,9 +166,8 @@ export default function ButtonAppBar() {
           <Grid item xs>
             <form className={classes.root} noValidate autoComplete="off">
               <TextField
-                value={unit}
-                onChange={handleChangeUnit}
-                id="outlined-basic"
+                onChange={handleChange}
+
                 label="จำนวนยา"
                 variant="outlined"
               />
@@ -152,7 +178,6 @@ export default function ButtonAppBar() {
           <Grid item xs>
             <form className={classes.container} noValidate>
               <TextField
-                id="datetime-local"
                 label="วันที่-เวลา"
                 type="datetime-local"
                 defaultValue="2020-08-27T08:00"
@@ -166,17 +191,18 @@ export default function ButtonAppBar() {
 
           {/* ชื่อเภสัช */}
           <Grid item xs>
+
             <FormControl className={classes.formControl}>
-              <InputLabel id="demo-simple-select-label">ชื่อเภสัชกร</InputLabel>
+              <InputLabel>ชื่อเภสัชกร</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={employee}
-                onChange={handleChangeEmployee}
+                value={requisition.user}
+                onChange={handleChange}
               >
-                <MenuItem value={'ปลั๊ก'}>ปลั๊ก</MenuItem>
-                <MenuItem value={'พู่'}>พู่</MenuItem>
-                <MenuItem value={'บอล'}>บอล</MenuItem>
+                {users.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           </Grid>
@@ -188,7 +214,7 @@ export default function ButtonAppBar() {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  handleSubmit();
+
                 }}
               >
                 บันทึกข้อมูล
@@ -209,7 +235,9 @@ export default function ButtonAppBar() {
             </Grid>
           </Grid>
         </Grid>
-      </Card>
+
+      </div>
     </div>
   );
 }
+export default Requisition;

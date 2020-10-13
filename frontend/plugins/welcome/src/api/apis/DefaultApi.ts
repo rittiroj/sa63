@@ -33,11 +33,23 @@ export interface CreateDrugRequest {
     drug: EntDrug;
 }
 
+export interface CreateRegisterstoreRequest {
+    drug: EntRegisterStore;
+}
+
 export interface CreateRequisitionRequest {
     requisition: EntRequisition;
 }
 
+export interface CreateUserRequest {
+    user: EntUser;
+}
+
 export interface DeleteRequisitionRequest {
+    id: number;
+}
+
+export interface DeleteUserRequest {
     id: number;
 }
 
@@ -82,6 +94,11 @@ export interface UpdateRequisitionRequest {
     requisition: EntRequisition;
 }
 
+export interface UpdateUserRequest {
+    id: number;
+    user: EntUser;
+}
+
 /**
  * 
  */
@@ -123,6 +140,41 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create registerstore
+     * Create registerstore
+     */
+    async createRegisterstoreRaw(requestParameters: CreateRegisterstoreRequest): Promise<runtime.ApiResponse<EntRegisterStore>> {
+        if (requestParameters.drug === null || requestParameters.drug === undefined) {
+            throw new runtime.RequiredError('drug','Required parameter requestParameters.drug was null or undefined when calling createRegisterstore.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/registerstores`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntRegisterStoreToJSON(requestParameters.drug),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntRegisterStoreFromJSON(jsonValue));
+    }
+
+    /**
+     * Create registerstore
+     * Create registerstore
+     */
+    async createRegisterstore(requestParameters: CreateRegisterstoreRequest): Promise<EntRegisterStore> {
+        const response = await this.createRegisterstoreRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * Create Requisition
      * Create Requisition
      */
@@ -158,6 +210,41 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create user
+     * Create user
+     */
+    async createUserRaw(requestParameters: CreateUserRequest): Promise<runtime.ApiResponse<EntUser>> {
+        if (requestParameters.user === null || requestParameters.user === undefined) {
+            throw new runtime.RequiredError('user','Required parameter requestParameters.user was null or undefined when calling createUser.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/users`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntUserToJSON(requestParameters.user),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntUserFromJSON(jsonValue));
+    }
+
+    /**
+     * Create user
+     * Create user
+     */
+    async createUser(requestParameters: CreateUserRequest): Promise<EntUser> {
+        const response = await this.createUserRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * get Requisition by ID
      * Delete a Requisition entity by ID
      */
@@ -186,6 +273,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async deleteRequisition(requestParameters: DeleteRequisitionRequest): Promise<object> {
         const response = await this.deleteRequisitionRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get user by ID
+     * Delete a user entity by ID
+     */
+    async deleteUserRaw(requestParameters: DeleteUserRequest): Promise<runtime.ApiResponse<object>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteUser.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * get user by ID
+     * Delete a user entity by ID
+     */
+    async deleteUser(requestParameters: DeleteUserRequest): Promise<object> {
+        const response = await this.deleteUserRaw(requestParameters);
         return await response.value();
     }
 
@@ -497,6 +616,45 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async updateRequisition(requestParameters: UpdateRequisitionRequest): Promise<EntRequisition> {
         const response = await this.updateRequisitionRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * update user by ID
+     * Update a user entity by ID
+     */
+    async updateUserRaw(requestParameters: UpdateUserRequest): Promise<runtime.ApiResponse<EntUser>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateUser.');
+        }
+
+        if (requestParameters.user === null || requestParameters.user === undefined) {
+            throw new runtime.RequiredError('user','Required parameter requestParameters.user was null or undefined when calling updateUser.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntUserToJSON(requestParameters.user),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntUserFromJSON(jsonValue));
+    }
+
+    /**
+     * update user by ID
+     * Update a user entity by ID
+     */
+    async updateUser(requestParameters: UpdateUserRequest): Promise<EntUser> {
+        const response = await this.updateUserRaw(requestParameters);
         return await response.value();
     }
 

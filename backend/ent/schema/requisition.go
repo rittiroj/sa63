@@ -16,7 +16,7 @@ type Requisition struct {
 // Fields of the Requisition.
 func (Requisition) Fields() []ent.Field {
 	return []ent.Field{
-		
+		field.Int("value").Positive(),
 		field.Time("added_time"),
 	}
 }

@@ -41,7 +41,6 @@ func (ctl *DrugController) CreateRegisterStore(c *gin.Context) {
 	rs, err := ctl.client.RegisterStore.
 		Create().
 		SetName(obj.Name).
-		// SetValue(obj.Value).
 		Save(context.Background())
 
 	if err != nil {
@@ -133,12 +132,12 @@ func (ctl *RegisterStoreController) ListRegisterStore(c *gin.Context) {
 
 // NewRegisterStoreController creates and registers handles for the user controller
 func NewRegisterStoreController(router gin.IRouter, client *ent.Client) *RegisterStoreController {
-	uc := &RegisterStoreController{
+	rs := &RegisterStoreController{
 		client: client,
 		router: router,
 	}
-	uc.register()
-	return uc
+	rs.register()
+	return rs
 }
 
 // InitRegisterStoreController registers routes to the main engine
@@ -149,5 +148,5 @@ func (ctl *RegisterStoreController) register() {
 
 	// CRUD
 	registerstores.GET(":id", ctl.GetRegisterStore)
-
+	registerstores.POST("", ctl.GetRegisterStore)
 }

@@ -270,7 +270,7 @@ func (dq *DrugQuery) WithRequisitions(opts ...func(*RequisitionQuery)) *DrugQuer
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"Name,omitempty"`
+//		Name string `json:"name,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -296,7 +296,7 @@ func (dq *DrugQuery) GroupBy(field string, fields ...string) *DrugGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"Name,omitempty"`
+//		Name string `json:"name,omitempty"`
 //	}
 //
 //	client.Drug.Query().

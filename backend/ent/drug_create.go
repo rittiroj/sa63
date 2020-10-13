@@ -20,15 +20,9 @@ type DrugCreate struct {
 	hooks    []Hook
 }
 
-// SetName sets the Name field.
+// SetName sets the name field.
 func (dc *DrugCreate) SetName(s string) *DrugCreate {
 	dc.mutation.SetName(s)
-	return dc
-}
-
-// SetValue sets the value field.
-func (dc *DrugCreate) SetValue(i int) *DrugCreate {
-	dc.mutation.SetValue(i)
 	return dc
 }
 
@@ -55,19 +49,11 @@ func (dc *DrugCreate) Mutation() *DrugMutation {
 // Save creates the Drug in the database.
 func (dc *DrugCreate) Save(ctx context.Context) (*Drug, error) {
 	if _, ok := dc.mutation.Name(); !ok {
-		return nil, &ValidationError{Name: "Name", err: errors.New("ent: missing required field \"Name\"")}
+		return nil, &ValidationError{Name: "name", err: errors.New("ent: missing required field \"name\"")}
 	}
 	if v, ok := dc.mutation.Name(); ok {
 		if err := drug.NameValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
-		}
-	}
-	if _, ok := dc.mutation.Value(); !ok {
-		return nil, &ValidationError{Name: "value", err: errors.New("ent: missing required field \"value\"")}
-	}
-	if v, ok := dc.mutation.Value(); ok {
-		if err := drug.ValueValidator(v); err != nil {
-			return nil, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+			return nil, &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
 	var (
@@ -137,14 +123,6 @@ func (dc *DrugCreate) createSpec() (*Drug, *sqlgraph.CreateSpec) {
 			Column: drug.FieldName,
 		})
 		d.Name = value
-	}
-	if value, ok := dc.mutation.Value(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: drug.FieldValue,
-		})
-		d.Value = value
 	}
 	if nodes := dc.mutation.RequisitionsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

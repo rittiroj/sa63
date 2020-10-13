@@ -122,7 +122,7 @@ func (ctl *RequisitionController) GetRequisition(c *gin.Context) {
 		return
 	}
 
-	r, err := ctl.client.Requisition.
+	pv, err := ctl.client.Requisition.
 		Query().
 		Where(requisition.IDEQ(int(id))).
 		Only(context.Background())
@@ -133,7 +133,7 @@ func (ctl *RequisitionController) GetRequisition(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, r)
+	c.JSON(200, pv)
 }
 
 // ListRequisition handles request to get a list of RequisitionRequisition entities

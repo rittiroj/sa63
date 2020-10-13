@@ -12,7 +12,6 @@ var (
 	DrugsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "value", Type: field.TypeInt},
 	}
 	// DrugsTable holds the schema information for the "drugs" table.
 	DrugsTable = &schema.Table{
@@ -36,6 +35,7 @@ var (
 	// RequisitionsColumns holds the columns for the "requisitions" table.
 	RequisitionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "value", Type: field.TypeInt},
 		{Name: "added_time", Type: field.TypeTime},
 		{Name: "drug_id", Type: field.TypeInt, Nullable: true},
 		{Name: "registerstore_id", Type: field.TypeInt, Nullable: true},
@@ -49,21 +49,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "requisitions_drugs_requisitions",
-				Columns: []*schema.Column{RequisitionsColumns[2]},
+				Columns: []*schema.Column{RequisitionsColumns[3]},
 
 				RefColumns: []*schema.Column{DrugsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "requisitions_register_stores_requisitions",
-				Columns: []*schema.Column{RequisitionsColumns[3]},
+				Columns: []*schema.Column{RequisitionsColumns[4]},
 
 				RefColumns: []*schema.Column{RegisterStoresColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "requisitions_users_requisitions",
-				Columns: []*schema.Column{RequisitionsColumns[4]},
+				Columns: []*schema.Column{RequisitionsColumns[5]},
 
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,

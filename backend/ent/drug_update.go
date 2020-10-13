@@ -28,22 +28,9 @@ func (du *DrugUpdate) Where(ps ...predicate.Drug) *DrugUpdate {
 	return du
 }
 
-// SetName sets the Name field.
+// SetName sets the name field.
 func (du *DrugUpdate) SetName(s string) *DrugUpdate {
 	du.mutation.SetName(s)
-	return du
-}
-
-// SetValue sets the value field.
-func (du *DrugUpdate) SetValue(i int) *DrugUpdate {
-	du.mutation.ResetValue()
-	du.mutation.SetValue(i)
-	return du
-}
-
-// AddValue adds i to value.
-func (du *DrugUpdate) AddValue(i int) *DrugUpdate {
-	du.mutation.AddValue(i)
 	return du
 }
 
@@ -86,12 +73,7 @@ func (du *DrugUpdate) RemoveRequisitions(r ...*Requisition) *DrugUpdate {
 func (du *DrugUpdate) Save(ctx context.Context) (int, error) {
 	if v, ok := du.mutation.Name(); ok {
 		if err := drug.NameValidator(v); err != nil {
-			return 0, &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
-		}
-	}
-	if v, ok := du.mutation.Value(); ok {
-		if err := drug.ValueValidator(v); err != nil {
-			return 0, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+			return 0, &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
 
@@ -169,20 +151,6 @@ func (du *DrugUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: drug.FieldName,
 		})
 	}
-	if value, ok := du.mutation.Value(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: drug.FieldValue,
-		})
-	}
-	if value, ok := du.mutation.AddedValue(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: drug.FieldValue,
-		})
-	}
 	if nodes := du.mutation.RemovedRequisitionsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -239,22 +207,9 @@ type DrugUpdateOne struct {
 	mutation *DrugMutation
 }
 
-// SetName sets the Name field.
+// SetName sets the name field.
 func (duo *DrugUpdateOne) SetName(s string) *DrugUpdateOne {
 	duo.mutation.SetName(s)
-	return duo
-}
-
-// SetValue sets the value field.
-func (duo *DrugUpdateOne) SetValue(i int) *DrugUpdateOne {
-	duo.mutation.ResetValue()
-	duo.mutation.SetValue(i)
-	return duo
-}
-
-// AddValue adds i to value.
-func (duo *DrugUpdateOne) AddValue(i int) *DrugUpdateOne {
-	duo.mutation.AddValue(i)
 	return duo
 }
 
@@ -297,12 +252,7 @@ func (duo *DrugUpdateOne) RemoveRequisitions(r ...*Requisition) *DrugUpdateOne {
 func (duo *DrugUpdateOne) Save(ctx context.Context) (*Drug, error) {
 	if v, ok := duo.mutation.Name(); ok {
 		if err := drug.NameValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
-		}
-	}
-	if v, ok := duo.mutation.Value(); ok {
-		if err := drug.ValueValidator(v); err != nil {
-			return nil, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+			return nil, &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
 
@@ -376,20 +326,6 @@ func (duo *DrugUpdateOne) sqlSave(ctx context.Context) (d *Drug, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: drug.FieldName,
-		})
-	}
-	if value, ok := duo.mutation.Value(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: drug.FieldValue,
-		})
-	}
-	if value, ok := duo.mutation.AddedValue(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: drug.FieldValue,
 		})
 	}
 	if nodes := duo.mutation.RemovedRequisitionsIDs(); len(nodes) > 0 {

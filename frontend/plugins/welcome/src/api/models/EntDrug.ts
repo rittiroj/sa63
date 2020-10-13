@@ -27,11 +27,11 @@ import {
  */
 export interface EntDrug {
     /**
-     * DrugsName holds the value of the "drugsName" field.
+     * Name holds the value of the "Name" field.
      * @type {string}
      * @memberof EntDrug
      */
-    drugsName?: string;
+    name?: string;
     /**
      * 
      * @type {EntDrugEdges}
@@ -44,12 +44,6 @@ export interface EntDrug {
      * @memberof EntDrug
      */
     id?: number;
-    /**
-     * Value holds the value of the "value" field.
-     * @type {number}
-     * @memberof EntDrug
-     */
-    value?: number;
 }
 
 export function EntDrugFromJSON(json: any): EntDrug {
@@ -62,10 +56,9 @@ export function EntDrugFromJSONTyped(json: any, ignoreDiscriminator: boolean): E
     }
     return {
         
-        'drugsName': !exists(json, 'drugsName') ? undefined : json['drugsName'],
+        'name': !exists(json, 'Name') ? undefined : json['Name'],
         'edges': !exists(json, 'edges') ? undefined : EntDrugEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'value': !exists(json, 'value') ? undefined : json['value'],
     };
 }
 
@@ -78,10 +71,9 @@ export function EntDrugToJSON(value?: EntDrug | null): any {
     }
     return {
         
-        'drugsName': value.drugsName,
+        'Name': value.name,
         'edges': EntDrugEdgesToJSON(value.edges),
         'id': value.id,
-        'value': value.value,
     };
 }
 

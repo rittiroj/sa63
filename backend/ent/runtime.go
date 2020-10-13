@@ -5,6 +5,7 @@ package ent
 import (
 	"github.com/Admin/app/ent/drug"
 	"github.com/Admin/app/ent/registerstore"
+	"github.com/Admin/app/ent/requisition"
 	"github.com/Admin/app/ent/schema"
 	"github.com/Admin/app/ent/user"
 )
@@ -15,20 +16,22 @@ import (
 func init() {
 	drugFields := schema.Drug{}.Fields()
 	_ = drugFields
-	// drugDescName is the schema descriptor for Name field.
+	// drugDescName is the schema descriptor for name field.
 	drugDescName := drugFields[0].Descriptor()
-	// drug.NameValidator is a validator for the "Name" field. It is called by the builders before save.
+	// drug.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	drug.NameValidator = drugDescName.Validators[0].(func(string) error)
-	// drugDescValue is the schema descriptor for value field.
-	drugDescValue := drugFields[1].Descriptor()
-	// drug.ValueValidator is a validator for the "value" field. It is called by the builders before save.
-	drug.ValueValidator = drugDescValue.Validators[0].(func(int) error)
 	registerstoreFields := schema.RegisterStore{}.Fields()
 	_ = registerstoreFields
 	// registerstoreDescName is the schema descriptor for name field.
 	registerstoreDescName := registerstoreFields[0].Descriptor()
 	// registerstore.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	registerstore.NameValidator = registerstoreDescName.Validators[0].(func(string) error)
+	requisitionFields := schema.Requisition{}.Fields()
+	_ = requisitionFields
+	// requisitionDescValue is the schema descriptor for value field.
+	requisitionDescValue := requisitionFields[0].Descriptor()
+	// requisition.ValueValidator is a validator for the "value" field. It is called by the builders before save.
+	requisition.ValueValidator = requisitionDescValue.Validators[0].(func(int) error)
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescName is the schema descriptor for name field.

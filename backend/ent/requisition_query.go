@@ -332,12 +332,12 @@ func (rq *RequisitionQuery) WithDrug(opts ...func(*DrugQuery)) *RequisitionQuery
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"added_time,omitempty"`
+//		Value int `json:"value,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Requisition.Query().
-//		GroupBy(requisition.FieldAddedTime).
+//		GroupBy(requisition.FieldValue).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -358,11 +358,11 @@ func (rq *RequisitionQuery) GroupBy(field string, fields ...string) *Requisition
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"added_time,omitempty"`
+//		Value int `json:"value,omitempty"`
 //	}
 //
 //	client.Requisition.Query().
-//		Select(requisition.FieldAddedTime).
+//		Select(requisition.FieldValue).
 //		Scan(ctx, &v)
 //
 func (rq *RequisitionQuery) Select(field string, fields ...string) *RequisitionSelect {

@@ -14,8 +14,7 @@ type Drug struct {
 // Fields of the Drug.
 func (Drug) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("Name").NotEmpty(),
-		field.Int("value").Positive(),
+		field.String("name").NotEmpty(),
 	}
 }
 

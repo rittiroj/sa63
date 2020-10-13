@@ -15,10 +15,8 @@ type Drug struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Name holds the value of the "Name" field.
-	Name string `json:"Name,omitempty"`
-	// Value holds the value of the "value" field.
-	Value int `json:"value,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DrugQuery when eager-loading is set.
 	Edges DrugEdges `json:"edges"`
@@ -46,8 +44,7 @@ func (e DrugEdges) RequisitionsOrErr() ([]*Requisition, error) {
 func (*Drug) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
-		&sql.NullString{}, // Name
-		&sql.NullInt64{},  // value
+		&sql.NullString{}, // name
 	}
 }
 
@@ -64,14 +61,9 @@ func (d *Drug) assignValues(values ...interface{}) error {
 	d.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field Name", values[0])
+		return fmt.Errorf("unexpected type %T for field name", values[0])
 	} else if value.Valid {
 		d.Name = value.String
-	}
-	if value, ok := values[1].(*sql.NullInt64); !ok {
-		return fmt.Errorf("unexpected type %T for field value", values[1])
-	} else if value.Valid {
-		d.Value = int(value.Int64)
 	}
 	return nil
 }
@@ -104,10 +96,8 @@ func (d *Drug) String() string {
 	var builder strings.Builder
 	builder.WriteString("Drug(")
 	builder.WriteString(fmt.Sprintf("id=%v", d.ID))
-	builder.WriteString(", Name=")
+	builder.WriteString(", name=")
 	builder.WriteString(d.Name)
-	builder.WriteString(", value=")
-	builder.WriteString(fmt.Sprintf("%v", d.Value))
 	builder.WriteByte(')')
 	return builder.String()
 }

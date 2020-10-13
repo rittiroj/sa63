@@ -16,7 +16,6 @@ type DrugController struct {
 }
 type Drug struct {
 	Name string
-	// Value    int
 }
 
 // CreateDrug handles POST requests for adding drug entities
@@ -42,7 +41,6 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 	d, err := ctl.client.Drug.
 		Create().
 		SetName(obj.Name).
-		// SetValue(obj.Value).
 		Save(context.Background())
 
 	if err != nil {
@@ -134,12 +132,12 @@ func (ctl *DrugController) ListDrug(c *gin.Context) {
 
 // NewDrugController creates and registers handles for the user controller
 func NewDrugController(router gin.IRouter, client *ent.Client) *DrugController {
-	uc := &DrugController{
+	dc := &DrugController{
 		client: client,
 		router: router,
 	}
-	uc.register()
-	return uc
+	dc.register()
+	return dc
 }
 
 // InitDrugController registers routes to the main engine
@@ -147,8 +145,6 @@ func (ctl *DrugController) register() {
 	drugs := ctl.router.Group("/drugs")
 
 	drugs.GET("", ctl.ListDrug)
-
-	// CRUD
 	drugs.POST("", ctl.CreateDrug)
 	drugs.GET(":id", ctl.GetDrug)
 

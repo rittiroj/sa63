@@ -39,11 +39,11 @@ export interface EntRegisterStore {
      */
     id?: number;
     /**
-     * StoreName holds the value of the "store_Name" field.
+     * Name holds the value of the "name" field.
      * @type {string}
      * @memberof EntRegisterStore
      */
-    storeName?: string;
+    name?: string;
 }
 
 export function EntRegisterStoreFromJSON(json: any): EntRegisterStore {
@@ -58,7 +58,7 @@ export function EntRegisterStoreFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'edges': !exists(json, 'edges') ? undefined : EntRegisterStoreEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'storeName': !exists(json, 'store_Name') ? undefined : json['store_Name'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
@@ -73,7 +73,7 @@ export function EntRegisterStoreToJSON(value?: EntRegisterStore | null): any {
         
         'edges': EntRegisterStoreEdgesToJSON(value.edges),
         'id': value.id,
-        'store_Name': value.storeName,
+        'name': value.name,
     };
 }
 

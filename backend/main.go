@@ -14,14 +14,23 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+type Users struct {
+	User []User
+}
+
+type User struct {
+	Name     string
+	Email    string
+	Password string
+}
+
 type Drugs struct {
 	Drug []Drug
 }
 type Drug struct {
 	Name string
-	// Value int
-
 }
+
 type RegisterStores struct {
 	RegisterStore []RegisterStore
 }
@@ -29,7 +38,7 @@ type RegisterStore struct {
 	Name string
 }
 
-// @title SUT SA Example API
+// @title SUT SA Example API Playlist Vidoe
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
 // @termsOfService http://swagger.io/terms/
@@ -37,6 +46,7 @@ type RegisterStore struct {
 // @contact.name API Support
 // @contact.url http://www.swagger.io/support
 // @contact.email support@swagger.io
+
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
@@ -73,7 +83,7 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	client, err := ent.Open("sqlite3", "file:ent?mode=memory&cache=shared&_fk=1")
+	client, err := ent.Open("sqlite3", "file:ent.db?cache=shared&_fk=1")
 	if err != nil {
 		log.Fatalf("fail to open sqlite3: %v", err)
 	}
@@ -82,24 +92,27 @@ func main() {
 	if err := client.Schema.Create(context.Background()); err != nil {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
+
 	// Set Drug Data
 	drugs := Drugs{
 		Drug: []Drug{
 			Drug{"para"},
+			Drug{"ยาแก้ไอ"},
+			Drug{"ยาแกเปวด"},
 		},
 	}
 	for _, d := range drugs.Drug {
 		client.Drug.
 			Create().
 			SetName(d.Name).
-			// SetValue(d.Value).
 			Save(context.Background())
 	}
 
 	// Set RegisterStore Data
 	registerstores := RegisterStores{
 		RegisterStore: []RegisterStore{
-			RegisterStore{"Chanwit Kaewkasi"},
+			RegisterStore{"คลังนอก"},
+			RegisterStore{"คลังใน"},
 		},
 	}
 
@@ -107,6 +120,23 @@ func main() {
 		client.RegisterStore.
 			Create().
 			SetName(rs.Name).
+			Save(context.Background())
+	}
+
+	// Set Users Data
+	users := Users{
+		User: []User{
+			User{"puzk dtealz", "pp@gmail.com", "asdwqe"},
+			User{"kuma rate", "me@example.com", "puzk"},
+		},
+	}
+
+	for _, u := range users.User {
+		client.User.
+			Create().
+			SetName(u.Name).
+			SetEmail(u.Email).
+			SetPassword(u.Password).
 			Save(context.Background())
 	}
 

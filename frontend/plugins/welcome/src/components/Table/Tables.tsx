@@ -11,6 +11,10 @@ import Button from '@material-ui/core/Button';
 import { DefaultApi } from '../../api/apis';
 import { EntDrug } from '../../api/models/EntDrug';
 import { EntUser } from '../../api/models/EntUser';
+import { EntRegisterStore } from '../../api/models/EntRegisterStore';
+
+
+
 
 const useStyles = makeStyles({
   table: {
@@ -23,6 +27,8 @@ export default function ComponentsTable() {
   const api = new DefaultApi();
   const [drugs, setDrugs] = useState<EntDrug[]>([]);
   const [users, setUsers] = useState<EntUser[]>([]);
+  const [registerstores, setRegisterStore] = useState<EntRegisterStore[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,8 +36,29 @@ export default function ComponentsTable() {
       const res = await api.listDrug({ limit: 10, offset: 0 });
       setLoading(false);
       setDrugs(res);
+
+
     };
     getDrugs();
+  }, [loading]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const res = await api.listUser({ limit: 10, offset: 0 });
+      setLoading(false);
+      setUsers(res);
+
+    };
+    getUsers();
+  }, [loading]);
+
+  useEffect(() => {
+    const getRegisterStore = async () => {
+      const res = await api.listUser({ limit: 10, offset: 0 });
+      setLoading(false);
+      setRegisterStore(res);
+    };
+    getRegisterStore();
   }, [loading]);
 
   return (
@@ -48,12 +75,12 @@ export default function ComponentsTable() {
         <TableBody>
           {drugs.map(item => (
             <TableRow key={item.id}>
-              <TableCell align="center">{item.drugsName}</TableCell>
+              <TableCell align="center">{item.name}</TableCell>
               {/* <TableCell align="center">{item.value}</TableCell> */}
 
               <TableCell align="center">
                 <Button
-                  onClick={() => {}}
+                  onClick={() => { }}
                   style={{ marginLeft: 10 }}
                   variant="contained"
                   color="secondary"
