@@ -93,10 +93,10 @@ func IDLTE(id int) predicate.Requisition {
 	})
 }
 
-// Value applies equality check predicate on the "value" field. It's identical to ValueEQ.
-func Value(v int) predicate.Requisition {
+// Amount applies equality check predicate on the "amount" field. It's identical to AmountEQ.
+func Amount(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldValue), v))
+		s.Where(sql.EQ(s.C(FieldAmount), v))
 	})
 }
 
@@ -107,22 +107,22 @@ func AddedTime(v time.Time) predicate.Requisition {
 	})
 }
 
-// ValueEQ applies the EQ predicate on the "value" field.
-func ValueEQ(v int) predicate.Requisition {
+// AmountEQ applies the EQ predicate on the "amount" field.
+func AmountEQ(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldValue), v))
+		s.Where(sql.EQ(s.C(FieldAmount), v))
 	})
 }
 
-// ValueNEQ applies the NEQ predicate on the "value" field.
-func ValueNEQ(v int) predicate.Requisition {
+// AmountNEQ applies the NEQ predicate on the "amount" field.
+func AmountNEQ(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldValue), v))
+		s.Where(sql.NEQ(s.C(FieldAmount), v))
 	})
 }
 
-// ValueIn applies the In predicate on the "value" field.
-func ValueIn(vs ...int) predicate.Requisition {
+// AmountIn applies the In predicate on the "amount" field.
+func AmountIn(vs ...int) predicate.Requisition {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -134,12 +134,12 @@ func ValueIn(vs ...int) predicate.Requisition {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldValue), v...))
+		s.Where(sql.In(s.C(FieldAmount), v...))
 	})
 }
 
-// ValueNotIn applies the NotIn predicate on the "value" field.
-func ValueNotIn(vs ...int) predicate.Requisition {
+// AmountNotIn applies the NotIn predicate on the "amount" field.
+func AmountNotIn(vs ...int) predicate.Requisition {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -151,35 +151,35 @@ func ValueNotIn(vs ...int) predicate.Requisition {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldValue), v...))
+		s.Where(sql.NotIn(s.C(FieldAmount), v...))
 	})
 }
 
-// ValueGT applies the GT predicate on the "value" field.
-func ValueGT(v int) predicate.Requisition {
+// AmountGT applies the GT predicate on the "amount" field.
+func AmountGT(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldValue), v))
+		s.Where(sql.GT(s.C(FieldAmount), v))
 	})
 }
 
-// ValueGTE applies the GTE predicate on the "value" field.
-func ValueGTE(v int) predicate.Requisition {
+// AmountGTE applies the GTE predicate on the "amount" field.
+func AmountGTE(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldValue), v))
+		s.Where(sql.GTE(s.C(FieldAmount), v))
 	})
 }
 
-// ValueLT applies the LT predicate on the "value" field.
-func ValueLT(v int) predicate.Requisition {
+// AmountLT applies the LT predicate on the "amount" field.
+func AmountLT(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldValue), v))
+		s.Where(sql.LT(s.C(FieldAmount), v))
 	})
 }
 
-// ValueLTE applies the LTE predicate on the "value" field.
-func ValueLTE(v int) predicate.Requisition {
+// AmountLTE applies the LTE predicate on the "amount" field.
+func AmountLTE(v int) predicate.Requisition {
 	return predicate.Requisition(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldValue), v))
+		s.Where(sql.LTE(s.C(FieldAmount), v))
 	})
 }
 

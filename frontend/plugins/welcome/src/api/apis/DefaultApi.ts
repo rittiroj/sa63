@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * SUT SA Example API
+ * SUT SA Example API Playlist Vidoe
  * This is a sample server for SUT SE 2563
  *
  * The version of the OpenAPI document: 1.0
@@ -49,10 +49,6 @@ export interface DeleteRequisitionRequest {
     id: number;
 }
 
-export interface DeleteUserRequest {
-    id: number;
-}
-
 export interface GetDrugRequest {
     id: number;
 }
@@ -79,7 +75,7 @@ export interface ListRegisterstoreRequest {
     offset?: number;
 }
 
-export interface ListRequisitionRequisitionRequest {
+export interface ListRequisitionRequest {
     limit?: number;
     offset?: number;
 }
@@ -92,11 +88,6 @@ export interface ListUserRequest {
 export interface UpdateRequisitionRequest {
     id: number;
     requisition: EntRequisition;
-}
-
-export interface UpdateUserRequest {
-    id: number;
-    user: EntUser;
 }
 
 /**
@@ -175,8 +166,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Requisition
-     * Create Requisition
+     * Create requisition
+     * Create requisition
      */
     async createRequisitionRaw(requestParameters: CreateRequisitionRequest): Promise<runtime.ApiResponse<EntRequisition>> {
         if (requestParameters.requisition === null || requestParameters.requisition === undefined) {
@@ -201,8 +192,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Requisition
-     * Create Requisition
+     * Create requisition
+     * Create requisition
      */
     async createRequisition(requestParameters: CreateRequisitionRequest): Promise<EntRequisition> {
         const response = await this.createRequisitionRaw(requestParameters);
@@ -245,8 +236,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Requisition by ID
-     * Delete a Requisition entity by ID
+     * get requisition by ID
+     * Delete a requisition entity by ID
      */
     async deleteRequisitionRaw(requestParameters: DeleteRequisitionRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -258,7 +249,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/RequisitionsRequisition/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/requisitions/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -268,8 +259,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Requisition by ID
-     * Delete a Requisition entity by ID
+     * get requisition by ID
+     * Delete a requisition entity by ID
      */
     async deleteRequisition(requestParameters: DeleteRequisitionRequest): Promise<object> {
         const response = await this.deleteRequisitionRaw(requestParameters);
@@ -277,40 +268,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get user by ID
-     * Delete a user entity by ID
-     */
-    async deleteUserRaw(requestParameters: DeleteUserRequest): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteUser.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * get user by ID
-     * Delete a user entity by ID
-     */
-    async deleteUser(requestParameters: DeleteUserRequest): Promise<object> {
-        const response = await this.deleteUserRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * get Drug by ID
-     * Get a Drug entity by ID
+     * get drug by ID
+     * Get a drug entity by ID
      */
     async getDrugRaw(requestParameters: GetDrugRequest): Promise<runtime.ApiResponse<EntDrug>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -322,7 +281,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/Drug/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/drugs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -332,8 +291,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Drug by ID
-     * Get a Drug entity by ID
+     * get drug by ID
+     * Get a drug entity by ID
      */
     async getDrug(requestParameters: GetDrugRequest): Promise<EntDrug> {
         const response = await this.getDrugRaw(requestParameters);
@@ -373,8 +332,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Requisition by ID
-     * Get a Requisition entity by ID
+     * get requisition by ID
+     * Get a requisition entity by ID
      */
     async getRequisitionRaw(requestParameters: GetRequisitionRequest): Promise<runtime.ApiResponse<EntRequisition>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -386,7 +345,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/RequisitionsRequisitionRequisition/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/requisitions/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -396,8 +355,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Requisition by ID
-     * Get a Requisition entity by ID
+     * get requisition by ID
+     * Get a requisition entity by ID
      */
     async getRequisition(requestParameters: GetRequisitionRequest): Promise<EntRequisition> {
         const response = await this.getRequisitionRaw(requestParameters);
@@ -454,7 +413,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/Drug`,
+            path: `/drugs`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -509,10 +468,10 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list RequisitionRequisition entities
-     * List RequisitionRequisition entities
+     * list requisition entities
+     * List requisition entities
      */
-    async listRequisitionRequisitionRaw(requestParameters: ListRequisitionRequisitionRequest): Promise<runtime.ApiResponse<Array<EntRequisition>>> {
+    async listRequisitionRaw(requestParameters: ListRequisitionRequest): Promise<runtime.ApiResponse<Array<EntRequisition>>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.limit !== undefined) {
@@ -526,7 +485,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/Requisition`,
+            path: `/requisitions`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -536,11 +495,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list RequisitionRequisition entities
-     * List RequisitionRequisition entities
+     * list requisition entities
+     * List requisition entities
      */
-    async listRequisitionRequisition(requestParameters: ListRequisitionRequisitionRequest): Promise<Array<EntRequisition>> {
-        const response = await this.listRequisitionRequisitionRaw(requestParameters);
+    async listRequisition(requestParameters: ListRequisitionRequest): Promise<Array<EntRequisition>> {
+        const response = await this.listRequisitionRaw(requestParameters);
         return await response.value();
     }
 
@@ -581,8 +540,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Requisition by ID
-     * Update a Requisition entity by ID
+     * update requisition by ID
+     * Update a requisition entity by ID
      */
     async updateRequisitionRaw(requestParameters: UpdateRequisitionRequest): Promise<runtime.ApiResponse<EntRequisition>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -600,7 +559,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/Requisitions/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/requisitions/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -611,50 +570,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Requisition by ID
-     * Update a Requisition entity by ID
+     * update requisition by ID
+     * Update a requisition entity by ID
      */
     async updateRequisition(requestParameters: UpdateRequisitionRequest): Promise<EntRequisition> {
         const response = await this.updateRequisitionRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * update user by ID
-     * Update a user entity by ID
-     */
-    async updateUserRaw(requestParameters: UpdateUserRequest): Promise<runtime.ApiResponse<EntUser>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateUser.');
-        }
-
-        if (requestParameters.user === null || requestParameters.user === undefined) {
-            throw new runtime.RequiredError('user','Required parameter requestParameters.user was null or undefined when calling updateUser.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: EntUserToJSON(requestParameters.user),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntUserFromJSON(jsonValue));
-    }
-
-    /**
-     * update user by ID
-     * Update a user entity by ID
-     */
-    async updateUser(requestParameters: UpdateUserRequest): Promise<EntUser> {
-        const response = await this.updateUserRaw(requestParameters);
         return await response.value();
     }
 

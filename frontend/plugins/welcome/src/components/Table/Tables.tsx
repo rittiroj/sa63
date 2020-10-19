@@ -66,17 +66,17 @@ export default function ComponentsTable() {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            {/* <TableCell align="center">ชื่อเภสัช</TableCell> */}
+            { <TableCell align="center">ชื่อเภสัช</TableCell> }
             <TableCell align="center">ชื่อยา</TableCell>
-            {/* <TableCell align="center">จำนวนยา</TableCell>
-            <TableCell align="center">เภสัชกร</TableCell> */}
+            { <TableCell align="center">จำนวนยา</TableCell>}
+            <TableCell align="center">เภสัชกร</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {drugs.map(item => (
             <TableRow key={item.id}>
               <TableCell align="center">{item.name}</TableCell>
-              {/* <TableCell align="center">{item.value}</TableCell> */}
+              {/* {<TableCell align="center">{item.value}</TableCell> } */}
 
               <TableCell align="center">
                 <Button

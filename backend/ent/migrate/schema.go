@@ -35,7 +35,7 @@ var (
 	// RequisitionsColumns holds the columns for the "requisitions" table.
 	RequisitionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "value", Type: field.TypeInt},
+		{Name: "amount", Type: field.TypeInt},
 		{Name: "added_time", Type: field.TypeTime},
 		{Name: "drug_id", Type: field.TypeInt, Nullable: true},
 		{Name: "registerstore_id", Type: field.TypeInt, Nullable: true},

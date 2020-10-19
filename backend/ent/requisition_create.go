@@ -23,9 +23,9 @@ type RequisitionCreate struct {
 	hooks    []Hook
 }
 
-// SetValue sets the value field.
-func (rc *RequisitionCreate) SetValue(i int) *RequisitionCreate {
-	rc.mutation.SetValue(i)
+// SetAmount sets the amount field.
+func (rc *RequisitionCreate) SetAmount(i int) *RequisitionCreate {
+	rc.mutation.SetAmount(i)
 	return rc
 }
 
@@ -99,12 +99,12 @@ func (rc *RequisitionCreate) Mutation() *RequisitionMutation {
 
 // Save creates the Requisition in the database.
 func (rc *RequisitionCreate) Save(ctx context.Context) (*Requisition, error) {
-	if _, ok := rc.mutation.Value(); !ok {
-		return nil, &ValidationError{Name: "value", err: errors.New("ent: missing required field \"value\"")}
+	if _, ok := rc.mutation.Amount(); !ok {
+		return nil, &ValidationError{Name: "amount", err: errors.New("ent: missing required field \"amount\"")}
 	}
-	if v, ok := rc.mutation.Value(); ok {
-		if err := requisition.ValueValidator(v); err != nil {
-			return nil, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+	if v, ok := rc.mutation.Amount(); ok {
+		if err := requisition.AmountValidator(v); err != nil {
+			return nil, &ValidationError{Name: "amount", err: fmt.Errorf("ent: validator failed for field \"amount\": %w", err)}
 		}
 	}
 	if _, ok := rc.mutation.AddedTime(); !ok {
@@ -170,13 +170,13 @@ func (rc *RequisitionCreate) createSpec() (*Requisition, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := rc.mutation.Value(); ok {
+	if value, ok := rc.mutation.Amount(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: requisition.FieldValue,
+			Column: requisition.FieldAmount,
 		})
-		r.Value = value
+		r.Amount = value
 	}
 	if value, ok := rc.mutation.AddedTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

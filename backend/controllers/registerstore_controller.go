@@ -14,9 +14,6 @@ type RegisterStoreController struct {
 	client *ent.Client
 	router gin.IRouter
 }
-type RegisterStore struct {
-	Name string
-}
 
 // CreateRegisterStore handles POST requests for adding registerstore entities
 // @Summary Create registerstore
@@ -29,11 +26,11 @@ type RegisterStore struct {
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
 // @Router /registerstores [post]
-func (ctl *DrugController) CreateRegisterStore(c *gin.Context) {
-	obj := RegisterStore{}
+func (ctl *RegisterStoreController) CreateRegisterStore(c *gin.Context) {
+	obj := ent.RegisterStore{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "drug binding failed",
+			"error": "RegisterStore binding failed",
 		})
 		return
 	}
@@ -58,7 +55,7 @@ func (ctl *DrugController) CreateRegisterStore(c *gin.Context) {
 // @Description get registerStore by ID
 // @ID get-registerStore
 // @Produce  json
-// @Param id path int true "registerstore ID"
+// @Param id path int true "Registerstore ID"
 // @Success 200 {object} ent.RegisterStore
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -145,8 +142,6 @@ func (ctl *RegisterStoreController) register() {
 	registerstores := ctl.router.Group("/registerstores")
 
 	registerstores.GET("", ctl.ListRegisterStore)
-
-	// CRUD
 	registerstores.GET(":id", ctl.GetRegisterStore)
-	registerstores.POST("", ctl.GetRegisterStore)
+	registerstores.POST("", ctl.CreateRegisterStore)
 }

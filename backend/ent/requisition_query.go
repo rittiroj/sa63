@@ -332,12 +332,12 @@ func (rq *RequisitionQuery) WithDrug(opts ...func(*DrugQuery)) *RequisitionQuery
 // Example:
 //
 //	var v []struct {
-//		Value int `json:"value,omitempty"`
+//		Amount int `json:"amount,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Requisition.Query().
-//		GroupBy(requisition.FieldValue).
+//		GroupBy(requisition.FieldAmount).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -358,11 +358,11 @@ func (rq *RequisitionQuery) GroupBy(field string, fields ...string) *Requisition
 // Example:
 //
 //	var v []struct {
-//		Value int `json:"value,omitempty"`
+//		Amount int `json:"amount,omitempty"`
 //	}
 //
 //	client.Requisition.Query().
-//		Select(requisition.FieldValue).
+//		Select(requisition.FieldAmount).
 //		Scan(ctx, &v)
 //
 func (rq *RequisitionQuery) Select(field string, fields ...string) *RequisitionSelect {

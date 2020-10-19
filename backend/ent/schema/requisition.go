@@ -1,8 +1,6 @@
 package schema
 
 import (
-	
-
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
@@ -16,7 +14,7 @@ type Requisition struct {
 // Fields of the Requisition.
 func (Requisition) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("value").Positive(),
+		field.Int("amount").Positive(),
 		field.Time("added_time"),
 	}
 }

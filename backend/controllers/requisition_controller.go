@@ -14,7 +14,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// RequisitionController defines the struct for the Requisition controller
 type RequisitionController struct {
 	client *ent.Client
 	router gin.IRouter
@@ -25,15 +24,16 @@ type Requisition struct {
 	Registerstore int
 	Drug          int
 	Added         string
+	Amount        int
 }
 
-// CreateRequisition handles POST requests for adding Requisition entities
-// @Summary Create Requisition
-// @Description Create Requisition
-// @ID create-Requisition
+// CreateRequisition handles POST requests for adding requisition entities
+// @Summary Create requisition
+// @Description Create requisition
+// @ID create-requisition
 // @Accept   json
 // @Produce  json
-// @Param Requisition body ent.Requisition true "Requisition entity"
+// @Param requisition body ent.Requisition true "Requisition entity"
 // @Success 200 {object} ent.Requisition
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -42,7 +42,7 @@ func (ctl *RequisitionController) CreateRequisition(c *gin.Context) {
 	obj := Requisition{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "Requisition binding failed",
+			"error": "requisition binding failed",
 		})
 		return
 	}
@@ -66,7 +66,7 @@ func (ctl *RequisitionController) CreateRequisition(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "RegisterStore not found",
+			"error": "registerstore not found",
 		})
 		return
 	}
@@ -84,12 +84,13 @@ func (ctl *RequisitionController) CreateRequisition(c *gin.Context) {
 	}
 
 	time, err := time.Parse(time.RFC3339, obj.Added)
-	pv, err := ctl.client.Requisition.
+	rq, err := ctl.client.Requisition.
 		Create().
+		SetAmount(obj.Amount).
 		SetAddedTime(time).
-		SetUser(u).
-		SetRegisterstore(rs).
 		SetDrug(d).
+		SetRegisterstore(rs).
+		SetUser(u).
 		Save(context.Background())
 
 	if err != nil {
@@ -99,20 +100,23 @@ func (ctl *RequisitionController) CreateRequisition(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, pv)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   rq,
+	})
 }
 
-// GetRequisition handles GET requests to retrieve a Requisition entity
-// @Summary Get a Requisition entity by ID
-// @Description get Requisition by ID
-// @ID get-Requisition
+// GetRequisition handles GET requests to retrieve a requisition entity
+// @Summary Get a requisition entity by ID
+// @Description get requisition by ID
+// @ID get-requisition
 // @Produce  json
 // @Param id path int true "Requisition ID"
 // @Success 200 {object} ent.Requisition
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /RequisitionsRequisitionRequisition/{id} [get]
+// @Router /requisitions/{id} [get]
 func (ctl *RequisitionController) GetRequisition(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -122,7 +126,7 @@ func (ctl *RequisitionController) GetRequisition(c *gin.Context) {
 		return
 	}
 
-	pv, err := ctl.client.Requisition.
+	rq, err := ctl.client.Requisition.
 		Query().
 		Where(requisition.IDEQ(int(id))).
 		Only(context.Background())
@@ -133,20 +137,20 @@ func (ctl *RequisitionController) GetRequisition(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, pv)
+	c.JSON(200, rq)
 }
 
-// ListRequisition handles request to get a list of RequisitionRequisition entities
-// @Summary List RequisitionRequisition entities
-// @Description list RequisitionRequisition entities
-// @ID list-RequisitionRequisition
+// ListRequisition handles request to get a list of requisition entities
+// @Summary List requisition entities
+// @Description list requisition entities
+// @ID list-requisition
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
 // @Success 200 {array} ent.Requisition
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Requisition [get]
+// @Router /requisitions [get]
 func (ctl *RequisitionController) ListRequisition(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -166,7 +170,7 @@ func (ctl *RequisitionController) ListRequisition(c *gin.Context) {
 		}
 	}
 
-	Requisition, err := ctl.client.Requisition.
+	requisitions, err := ctl.client.Requisition.
 		Query().
 		WithUser().
 		WithRegisterstore().
@@ -179,20 +183,20 @@ func (ctl *RequisitionController) ListRequisition(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, Requisition)
+	c.JSON(200, requisitions)
 }
 
-// DeleteRequisition handles DELETE requests to delete a Requisition entity
-// @Summary Delete a Requisition entity by ID
-// @Description get Requisition by ID
-// @ID delete-Requisition
+// DeleteRequisition handles DELETE requests to delete a requisition entity
+// @Summary Delete a requisition entity by ID
+// @Description get requisition by ID
+// @ID delete-requisition
 // @Produce  json
 // @Param id path int true "Requisition ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /RequisitionsRequisition/{id} [delete]
+// @Router /requisitions/{id} [delete]
 func (ctl *RequisitionController) DeleteRequisition(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -215,18 +219,18 @@ func (ctl *RequisitionController) DeleteRequisition(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateRequisition handles PUT requests to update a Requisition entity
-// @Summary Update a Requisition entity by ID
-// @Description update Requisition by ID
-// @ID update-Requisition
+// UpdateRequisition handles PUT requests to update a requisition entity
+// @Summary Update a requisition entity by ID
+// @Description update requisition by ID
+// @ID update-requisition
 // @Accept   json
 // @Produce  json
 // @Param id path int true "Requisition ID"
-// @Param Requisition body ent.Requisition true "Requisition entity"
+// @Param requisition body ent.Requisition true "Requisition entity"
 // @Success 200 {object} ent.Requisition
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Requisitions/{id} [put]
+// @Router /requisitions/{id} [put]
 func (ctl *RequisitionController) UpdateRequisition(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -244,7 +248,7 @@ func (ctl *RequisitionController) UpdateRequisition(c *gin.Context) {
 		return
 	}
 	obj.ID = int(id)
-	u, err := ctl.client.Requisition.
+	uq, err := ctl.client.Requisition.
 		UpdateOne(&obj).
 		Save(context.Background())
 	if err != nil {
@@ -252,17 +256,17 @@ func (ctl *RequisitionController) UpdateRequisition(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, u)
+	c.JSON(200, uq)
 }
 
-// NewRequisitionController creates and registers handles for the Requisition controller
+// NewRequisitionController creates and registers handles for the requisition controller
 func NewRequisitionController(router gin.IRouter, client *ent.Client) *RequisitionController {
-	uc := &RequisitionController{
+	rq := &RequisitionController{
 		client: client,
 		router: router,
 	}
-	uc.register()
-	return uc
+	rq.register()
+	return rq
 }
 
 // InitRequisitionController registers routes to the main engine

@@ -774,8 +774,8 @@ type RequisitionMutation struct {
 	op                   Op
 	typ                  string
 	id                   *int
-	value                *int
-	addvalue             *int
+	amount               *int
+	addamount            *int
 	added_time           *time.Time
 	clearedFields        map[string]struct{}
 	user                 *int
@@ -867,61 +867,61 @@ func (m *RequisitionMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetValue sets the value field.
-func (m *RequisitionMutation) SetValue(i int) {
-	m.value = &i
-	m.addvalue = nil
+// SetAmount sets the amount field.
+func (m *RequisitionMutation) SetAmount(i int) {
+	m.amount = &i
+	m.addamount = nil
 }
 
-// Value returns the value value in the mutation.
-func (m *RequisitionMutation) Value() (r int, exists bool) {
-	v := m.value
+// Amount returns the amount value in the mutation.
+func (m *RequisitionMutation) Amount() (r int, exists bool) {
+	v := m.amount
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldValue returns the old value value of the Requisition.
+// OldAmount returns the old amount value of the Requisition.
 // If the Requisition object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *RequisitionMutation) OldValue(ctx context.Context) (v int, err error) {
+func (m *RequisitionMutation) OldAmount(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldValue is allowed only on UpdateOne operations")
+		return v, fmt.Errorf("OldAmount is allowed only on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldValue requires an ID field in the mutation")
+		return v, fmt.Errorf("OldAmount requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldValue: %w", err)
+		return v, fmt.Errorf("querying old value for OldAmount: %w", err)
 	}
-	return oldValue.Value, nil
+	return oldValue.Amount, nil
 }
 
-// AddValue adds i to value.
-func (m *RequisitionMutation) AddValue(i int) {
-	if m.addvalue != nil {
-		*m.addvalue += i
+// AddAmount adds i to amount.
+func (m *RequisitionMutation) AddAmount(i int) {
+	if m.addamount != nil {
+		*m.addamount += i
 	} else {
-		m.addvalue = &i
+		m.addamount = &i
 	}
 }
 
-// AddedValue returns the value that was added to the value field in this mutation.
-func (m *RequisitionMutation) AddedValue() (r int, exists bool) {
-	v := m.addvalue
+// AddedAmount returns the value that was added to the amount field in this mutation.
+func (m *RequisitionMutation) AddedAmount() (r int, exists bool) {
+	v := m.addamount
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetValue reset all changes of the "value" field.
-func (m *RequisitionMutation) ResetValue() {
-	m.value = nil
-	m.addvalue = nil
+// ResetAmount reset all changes of the "amount" field.
+func (m *RequisitionMutation) ResetAmount() {
+	m.amount = nil
+	m.addamount = nil
 }
 
 // SetAddedTime sets the added_time field.
@@ -1093,8 +1093,8 @@ func (m *RequisitionMutation) Type() string {
 // fields that were in/decremented, call AddedFields().
 func (m *RequisitionMutation) Fields() []string {
 	fields := make([]string, 0, 2)
-	if m.value != nil {
-		fields = append(fields, requisition.FieldValue)
+	if m.amount != nil {
+		fields = append(fields, requisition.FieldAmount)
 	}
 	if m.added_time != nil {
 		fields = append(fields, requisition.FieldAddedTime)
@@ -1107,8 +1107,8 @@ func (m *RequisitionMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *RequisitionMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case requisition.FieldValue:
-		return m.Value()
+	case requisition.FieldAmount:
+		return m.Amount()
 	case requisition.FieldAddedTime:
 		return m.AddedTime()
 	}
@@ -1120,8 +1120,8 @@ func (m *RequisitionMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *RequisitionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case requisition.FieldValue:
-		return m.OldValue(ctx)
+	case requisition.FieldAmount:
+		return m.OldAmount(ctx)
 	case requisition.FieldAddedTime:
 		return m.OldAddedTime(ctx)
 	}
@@ -1133,12 +1133,12 @@ func (m *RequisitionMutation) OldField(ctx context.Context, name string) (ent.Va
 // type mismatch the field type.
 func (m *RequisitionMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case requisition.FieldValue:
+	case requisition.FieldAmount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetValue(v)
+		m.SetAmount(v)
 		return nil
 	case requisition.FieldAddedTime:
 		v, ok := value.(time.Time)
@@ -1155,8 +1155,8 @@ func (m *RequisitionMutation) SetField(name string, value ent.Value) error {
 // or decremented during this mutation.
 func (m *RequisitionMutation) AddedFields() []string {
 	var fields []string
-	if m.addvalue != nil {
-		fields = append(fields, requisition.FieldValue)
+	if m.addamount != nil {
+		fields = append(fields, requisition.FieldAmount)
 	}
 	return fields
 }
@@ -1166,8 +1166,8 @@ func (m *RequisitionMutation) AddedFields() []string {
 // that this field was not set, or was not define in the schema.
 func (m *RequisitionMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case requisition.FieldValue:
-		return m.AddedValue()
+	case requisition.FieldAmount:
+		return m.AddedAmount()
 	}
 	return nil, false
 }
@@ -1177,12 +1177,12 @@ func (m *RequisitionMutation) AddedField(name string) (ent.Value, bool) {
 // type mismatch the field type.
 func (m *RequisitionMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case requisition.FieldValue:
+	case requisition.FieldAmount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddValue(v)
+		m.AddAmount(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Requisition numeric field %s", name)
@@ -1212,8 +1212,8 @@ func (m *RequisitionMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *RequisitionMutation) ResetField(name string) error {
 	switch name {
-	case requisition.FieldValue:
-		m.ResetValue()
+	case requisition.FieldAmount:
+		m.ResetAmount()
 		return nil
 	case requisition.FieldAddedTime:
 		m.ResetAddedTime()

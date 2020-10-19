@@ -2,9 +2,6 @@ basePath: /api/v1
 definitions:
   ent.Drug:
     properties:
-      Name:
-        description: Name holds the value of the "Name" field.
-        type: string
       edges:
         $ref: '#/definitions/ent.DrugEdges'
         description: |-
@@ -14,6 +11,9 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
+      name:
+        description: Name holds the value of the "name" field.
+        type: string
     type: object
   ent.DrugEdges:
     properties:
@@ -51,6 +51,9 @@ definitions:
       added_time:
         description: AddedTime holds the value of the "added_time" field.
         type: string
+      amount:
+        description: Amount holds the value of the "amount" field.
+        type: integer
       edges:
         $ref: '#/definitions/ent.RequisitionEdges'
         description: |-
@@ -59,9 +62,6 @@ definitions:
         type: object
       id:
         description: ID of the ent.
-        type: integer
-      value:
-        description: Value holds the value of the "value" field.
         type: integer
     type: object
   ent.RequisitionEdges:
@@ -122,10 +122,10 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: SUT SA Example API
+  title: SUT SA Example API Playlist Vidoe
   version: "1.0"
 paths:
-  /Drug:
+  /drugs:
     get:
       description: list drug entities
       operationId: list-drug
@@ -156,162 +156,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: List drug entities
-  /Drug/{id}:
-    get:
-      description: get Drug by ID
-      operationId: get-Drug
-      parameters:
-      - description: Drug ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Drug'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Get a Drug entity by ID
-  /Requisition:
-    get:
-      description: list RequisitionRequisition entities
-      operationId: list-RequisitionRequisition
-      parameters:
-      - description: Limit
-        in: query
-        name: limit
-        type: integer
-      - description: Offset
-        in: query
-        name: offset
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/ent.Requisition'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: List RequisitionRequisition entities
-  /Requisitions/{id}:
-    put:
-      consumes:
-      - application/json
-      description: update Requisition by ID
-      operationId: update-Requisition
-      parameters:
-      - description: Requisition ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Requisition entity
-        in: body
-        name: Requisition
-        required: true
-        schema:
-          $ref: '#/definitions/ent.Requisition'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Requisition'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a Requisition entity by ID
-  /RequisitionsRequisition/{id}:
-    delete:
-      description: get Requisition by ID
-      operationId: delete-Requisition
-      parameters:
-      - description: Requisition ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a Requisition entity by ID
-  /RequisitionsRequisitionRequisition/{id}:
-    get:
-      description: get Requisition by ID
-      operationId: get-Requisition
-      parameters:
-      - description: Requisition ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Requisition'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Get a Requisition entity by ID
-  /drugs:
     post:
       consumes:
       - application/json
@@ -340,6 +184,36 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Create drug
+  /drugs/{id}:
+    get:
+      description: get drug by ID
+      operationId: get-drug
+      parameters:
+      - description: Drug ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Drug'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a drug entity by ID
   /registerstores:
     get:
       description: list registerstore entities
@@ -404,7 +278,7 @@ paths:
       description: get registerStore by ID
       operationId: get-registerStore
       parameters:
-      - description: registerstore ID
+      - description: Registerstore ID
         in: path
         name: id
         required: true
@@ -430,15 +304,45 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Get a registerStore entity by ID
   /requisitions:
+    get:
+      description: list requisition entities
+      operationId: list-requisition
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Requisition'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List requisition entities
     post:
       consumes:
       - application/json
-      description: Create Requisition
-      operationId: create-Requisition
+      description: Create requisition
+      operationId: create-requisition
       parameters:
       - description: Requisition entity
         in: body
-        name: Requisition
+        name: requisition
         required: true
         schema:
           $ref: '#/definitions/ent.Requisition'
@@ -457,7 +361,99 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Create Requisition
+      summary: Create requisition
+  /requisitions/{id}:
+    delete:
+      description: get requisition by ID
+      operationId: delete-requisition
+      parameters:
+      - description: Requisition ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a requisition entity by ID
+    get:
+      description: get requisition by ID
+      operationId: get-requisition
+      parameters:
+      - description: Requisition ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Requisition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a requisition entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update requisition by ID
+      operationId: update-requisition
+      parameters:
+      - description: Requisition ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Requisition entity
+        in: body
+        name: requisition
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Requisition'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Requisition'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a requisition entity by ID
   /users:
     get:
       description: list user entities
@@ -518,35 +514,6 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Create user
   /users/{id}:
-    delete:
-      description: get user by ID
-      operationId: delete-user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a user entity by ID
     get:
       description: get user by ID
       operationId: get-user
@@ -576,39 +543,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a user entity by ID
-    put:
-      consumes:
-      - application/json
-      description: update user by ID
-      operationId: update-user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: User entity
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/ent.User'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.User'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a user entity by ID
 securityDefinitions:
   ApiKeyAuth:
     in: header

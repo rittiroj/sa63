@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * SUT SA Example API
+ * SUT SA Example API Playlist Vidoe
  * This is a sample server for SUT SE 2563
  *
  * The version of the OpenAPI document: 1.0
@@ -27,12 +27,6 @@ import {
  */
 export interface EntDrug {
     /**
-     * Name holds the value of the "Name" field.
-     * @type {string}
-     * @memberof EntDrug
-     */
-    name?: string;
-    /**
      * 
      * @type {EntDrugEdges}
      * @memberof EntDrug
@@ -44,6 +38,12 @@ export interface EntDrug {
      * @memberof EntDrug
      */
     id?: number;
+    /**
+     * Name holds the value of the "name" field.
+     * @type {string}
+     * @memberof EntDrug
+     */
+    name?: string;
 }
 
 export function EntDrugFromJSON(json: any): EntDrug {
@@ -56,9 +56,9 @@ export function EntDrugFromJSONTyped(json: any, ignoreDiscriminator: boolean): E
     }
     return {
         
-        'name': !exists(json, 'Name') ? undefined : json['Name'],
         'edges': !exists(json, 'edges') ? undefined : EntDrugEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
@@ -71,9 +71,9 @@ export function EntDrugToJSON(value?: EntDrug | null): any {
     }
     return {
         
-        'Name': value.name,
         'edges': EntDrugEdgesToJSON(value.edges),
         'id': value.id,
+        'name': value.name,
     };
 }
 

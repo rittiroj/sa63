@@ -28,10 +28,10 @@ func init() {
 	registerstore.NameValidator = registerstoreDescName.Validators[0].(func(string) error)
 	requisitionFields := schema.Requisition{}.Fields()
 	_ = requisitionFields
-	// requisitionDescValue is the schema descriptor for value field.
-	requisitionDescValue := requisitionFields[0].Descriptor()
-	// requisition.ValueValidator is a validator for the "value" field. It is called by the builders before save.
-	requisition.ValueValidator = requisitionDescValue.Validators[0].(func(int) error)
+	// requisitionDescAmount is the schema descriptor for amount field.
+	requisitionDescAmount := requisitionFields[0].Descriptor()
+	// requisition.AmountValidator is a validator for the "amount" field. It is called by the builders before save.
+	requisition.AmountValidator = requisitionDescAmount.Validators[0].(func(int) error)
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescName is the schema descriptor for name field.

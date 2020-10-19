@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * SUT SA Example API
+ * SUT SA Example API Playlist Vidoe
  * This is a sample server for SUT SE 2563
  *
  * The version of the OpenAPI document: 1.0
@@ -33,6 +33,12 @@ export interface EntRequisition {
      */
     addedTime?: string;
     /**
+     * Amount holds the value of the "amount" field.
+     * @type {number}
+     * @memberof EntRequisition
+     */
+    amount?: number;
+    /**
      * 
      * @type {EntRequisitionEdges}
      * @memberof EntRequisition
@@ -44,12 +50,6 @@ export interface EntRequisition {
      * @memberof EntRequisition
      */
     id?: number;
-    /**
-     * Value holds the value of the "value" field.
-     * @type {number}
-     * @memberof EntRequisition
-     */
-    value?: number;
 }
 
 export function EntRequisitionFromJSON(json: any): EntRequisition {
@@ -63,9 +63,9 @@ export function EntRequisitionFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'addedTime': !exists(json, 'added_time') ? undefined : json['added_time'],
+        'amount': !exists(json, 'amount') ? undefined : json['amount'],
         'edges': !exists(json, 'edges') ? undefined : EntRequisitionEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'value': !exists(json, 'value') ? undefined : json['value'],
     };
 }
 
@@ -79,9 +79,9 @@ export function EntRequisitionToJSON(value?: EntRequisition | null): any {
     return {
         
         'added_time': value.addedTime,
+        'amount': value.amount,
         'edges': EntRequisitionEdgesToJSON(value.edges),
         'id': value.id,
-        'value': value.value,
     };
 }
 

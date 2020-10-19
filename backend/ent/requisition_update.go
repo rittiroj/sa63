@@ -31,16 +31,16 @@ func (ru *RequisitionUpdate) Where(ps ...predicate.Requisition) *RequisitionUpda
 	return ru
 }
 
-// SetValue sets the value field.
-func (ru *RequisitionUpdate) SetValue(i int) *RequisitionUpdate {
-	ru.mutation.ResetValue()
-	ru.mutation.SetValue(i)
+// SetAmount sets the amount field.
+func (ru *RequisitionUpdate) SetAmount(i int) *RequisitionUpdate {
+	ru.mutation.ResetAmount()
+	ru.mutation.SetAmount(i)
 	return ru
 }
 
-// AddValue adds i to value.
-func (ru *RequisitionUpdate) AddValue(i int) *RequisitionUpdate {
-	ru.mutation.AddValue(i)
+// AddAmount adds i to amount.
+func (ru *RequisitionUpdate) AddAmount(i int) *RequisitionUpdate {
+	ru.mutation.AddAmount(i)
 	return ru
 }
 
@@ -132,9 +132,9 @@ func (ru *RequisitionUpdate) ClearDrug() *RequisitionUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (ru *RequisitionUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := ru.mutation.Value(); ok {
-		if err := requisition.ValueValidator(v); err != nil {
-			return 0, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+	if v, ok := ru.mutation.Amount(); ok {
+		if err := requisition.AmountValidator(v); err != nil {
+			return 0, &ValidationError{Name: "amount", err: fmt.Errorf("ent: validator failed for field \"amount\": %w", err)}
 		}
 	}
 
@@ -205,18 +205,18 @@ func (ru *RequisitionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := ru.mutation.Value(); ok {
+	if value, ok := ru.mutation.Amount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: requisition.FieldValue,
+			Column: requisition.FieldAmount,
 		})
 	}
-	if value, ok := ru.mutation.AddedValue(); ok {
+	if value, ok := ru.mutation.AddedAmount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: requisition.FieldValue,
+			Column: requisition.FieldAmount,
 		})
 	}
 	if value, ok := ru.mutation.AddedTime(); ok {
@@ -349,16 +349,16 @@ type RequisitionUpdateOne struct {
 	mutation *RequisitionMutation
 }
 
-// SetValue sets the value field.
-func (ruo *RequisitionUpdateOne) SetValue(i int) *RequisitionUpdateOne {
-	ruo.mutation.ResetValue()
-	ruo.mutation.SetValue(i)
+// SetAmount sets the amount field.
+func (ruo *RequisitionUpdateOne) SetAmount(i int) *RequisitionUpdateOne {
+	ruo.mutation.ResetAmount()
+	ruo.mutation.SetAmount(i)
 	return ruo
 }
 
-// AddValue adds i to value.
-func (ruo *RequisitionUpdateOne) AddValue(i int) *RequisitionUpdateOne {
-	ruo.mutation.AddValue(i)
+// AddAmount adds i to amount.
+func (ruo *RequisitionUpdateOne) AddAmount(i int) *RequisitionUpdateOne {
+	ruo.mutation.AddAmount(i)
 	return ruo
 }
 
@@ -450,9 +450,9 @@ func (ruo *RequisitionUpdateOne) ClearDrug() *RequisitionUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (ruo *RequisitionUpdateOne) Save(ctx context.Context) (*Requisition, error) {
-	if v, ok := ruo.mutation.Value(); ok {
-		if err := requisition.ValueValidator(v); err != nil {
-			return nil, &ValidationError{Name: "value", err: fmt.Errorf("ent: validator failed for field \"value\": %w", err)}
+	if v, ok := ruo.mutation.Amount(); ok {
+		if err := requisition.AmountValidator(v); err != nil {
+			return nil, &ValidationError{Name: "amount", err: fmt.Errorf("ent: validator failed for field \"amount\": %w", err)}
 		}
 	}
 
@@ -521,18 +521,18 @@ func (ruo *RequisitionUpdateOne) sqlSave(ctx context.Context) (r *Requisition, e
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Requisition.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := ruo.mutation.Value(); ok {
+	if value, ok := ruo.mutation.Amount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: requisition.FieldValue,
+			Column: requisition.FieldAmount,
 		})
 	}
-	if value, ok := ruo.mutation.AddedValue(); ok {
+	if value, ok := ruo.mutation.AddedAmount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: requisition.FieldValue,
+			Column: requisition.FieldAmount,
 		})
 	}
 	if value, ok := ruo.mutation.AddedTime(); ok {

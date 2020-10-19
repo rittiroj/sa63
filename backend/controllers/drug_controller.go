@@ -14,9 +14,6 @@ type DrugController struct {
 	client *ent.Client
 	router gin.IRouter
 }
-type Drug struct {
-	Name string
-}
 
 // CreateDrug handles POST requests for adding drug entities
 // @Summary Create drug
@@ -30,7 +27,7 @@ type Drug struct {
 // @Failure 500 {object} gin.H
 // @Router /drugs [post]
 func (ctl *DrugController) CreateDrug(c *gin.Context) {
-	obj := Drug{}
+	obj := ent.Drug{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
 			"error": "drug binding failed",
@@ -53,17 +50,17 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 	c.JSON(200, d)
 }
 
-// GetDrug GET requests to retrieve a Drug entity
-// @Summary Get a Drug entity by ID
-// @Description get Drug by ID
-// @ID get-Drug
+// GetDrug GET requests to retrieve a drug entity
+// @Summary Get a drug entity by ID
+// @Description get drug by ID
+// @ID get-drug
 // @Produce  json
 // @Param id path int true "Drug ID"
 // @Success 200 {object} ent.Drug
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Drug/{id} [get]
+// @Router /drugs/{id} [get]
 func (ctl *DrugController) GetDrug(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -97,7 +94,7 @@ func (ctl *DrugController) GetDrug(c *gin.Context) {
 // @Success 200 {array} ent.Drug
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Drug [get]
+// @Router /drugs [get]
 func (ctl *DrugController) ListDrug(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
