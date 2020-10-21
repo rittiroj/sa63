@@ -73,7 +73,7 @@ interface requisition {
   Registerstore: number;
   Drug: number;
   Amount: number;
-  Added: Date;
+  Added_time: Date;
 }
 
 const Requisition: FC<{}> = () => {
@@ -111,12 +111,13 @@ const Requisition: FC<{}> = () => {
     event: React.ChangeEvent<{ name: string; value: unknown }>,) => {
     const name = event.target.name as keyof typeof Requisition;
     const { value } = event.target;
+    console.log('date select: ', value, typeof value) // show date from event.target.value
     setRequisition({ ...requisition, [name]: value });
     // console.log(requisition);
   };
   const handleChange = (
     event: React.ChangeEvent<{ name: string; value: unknown }>,) => {
-    console.log(requisition);
+    // console.log(requisition);
     const name = event.target.name as keyof typeof Requisition;
     const { value } = event.target;
     setRequisition({ ...requisition, [name]: value });
@@ -144,7 +145,8 @@ const Requisition: FC<{}> = () => {
     getDrugs();
     getUsers();
     getRegisterstores();
-  }, []);
+    console.log(requisition)
+  }, [requisition]);
 
   // clear input form
   function clear() {
@@ -158,12 +160,18 @@ const Requisition: FC<{}> = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requisition),
     };
+    // console.log('date: ', requisition.Added)
+    console.log('requisition: ', requisition)
     // console.log(requisition); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
 
     fetch(apiUrl, requestOptions)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        // setRequisition({ ...requisition, Added: requisition.Added });
+
+        // console.log(added_time)
+        console.log(data); // last data
+        // alert(JSON.stringify(requisition))
         if (data.status === true) {
           Toast.fire({
             icon: 'success',
@@ -259,11 +267,10 @@ const Requisition: FC<{}> = () => {
 
               {/* <form className={classes.container} noValidate> */}
               <TextField
-
-                name="Added"
+                name="Added_time"
                 label="วันที่-เวลา"
                 type="datetime-local"
-                value={requisition.Added || ''} // (undefined || '') = ''
+                value={requisition.Added_time || ''} // (undefined || '') = ''
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
