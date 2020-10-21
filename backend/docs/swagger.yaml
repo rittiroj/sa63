@@ -363,35 +363,6 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Create requisition
   /requisitions/{id}:
-    delete:
-      description: get requisition by ID
-      operationId: delete-requisition
-      parameters:
-      - description: Requisition ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a requisition entity by ID
     get:
       description: get requisition by ID
       operationId: get-requisition
@@ -421,39 +392,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a requisition entity by ID
-    put:
-      consumes:
-      - application/json
-      description: update requisition by ID
-      operationId: update-requisition
-      parameters:
-      - description: Requisition ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Requisition entity
-        in: body
-        name: requisition
-        required: true
-        schema:
-          $ref: '#/definitions/ent.Requisition'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Requisition'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a requisition entity by ID
   /users:
     get:
       description: list user entities

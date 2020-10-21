@@ -15,7 +15,7 @@ type UserController struct {
 	router gin.IRouter
 }
 
-// CreateUser handles POST requests for adding user entities
+// CreateUser handles POST requests for adding User entities
 // @Summary Create user
 // @Description Create user
 // @ID create-user
@@ -57,7 +57,7 @@ func (ctl *UserController) CreateUser(c *gin.Context) {
 // @Description get user by ID
 // @ID get-user
 // @Produce  json
-// @Param id path int true "User ID"
+// @Param id path int true "user ID"
 // @Success 200 {object} ent.User
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H

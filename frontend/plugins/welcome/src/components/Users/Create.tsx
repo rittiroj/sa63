@@ -69,11 +69,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface requisition {
-  user: number;
-  drug: number;
-  registerstore: number;
-  amount: string;
-  added: Date;
+  User: number;
+  Registerstore: number;
+  Drug: number;
+  Amount: number;
+  Added: Date;
 }
 
 const Requisition: FC<{}> = () => {
@@ -91,7 +91,7 @@ const Requisition: FC<{}> = () => {
     toast: true,
     position: 'center',
     showConfirmButton: false,
-    timer: 3000,
+    timer: 2000,
     timerProgressBar: true,
     didOpen: toast => {
       toast.addEventListener('mouseenter', Swal.stopTimer);
@@ -100,13 +100,29 @@ const Requisition: FC<{}> = () => {
   });
 
 
-  const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,) => {
+  const handleAmountChange = (
+    event: React.ChangeEvent<{ name: string; value: number }>,) => {
+    const name = event.target.name as keyof typeof Requisition;
+    const { value } = event.target;
+    setRequisition({ ...requisition, [name]: +value });
+    // console.log(requisition);
+  };
+  const handleDateChange = (
+    event: React.ChangeEvent<{ name: string; value: unknown }>,) => {
     const name = event.target.name as keyof typeof Requisition;
     const { value } = event.target;
     setRequisition({ ...requisition, [name]: value });
-    console.log(requisition);
+    // console.log(requisition);
   };
+  const handleChange = (
+    event: React.ChangeEvent<{ name: string; value: unknown }>,) => {
+    console.log(requisition);
+    const name = event.target.name as keyof typeof Requisition;
+    const { value } = event.target;
+    setRequisition({ ...requisition, [name]: value });
+    // console.log(requisition);
+  };
+
 
   const getUsers = async () => {
     const res = await http.listUser({ limit: 10, offset: 0 });
@@ -142,7 +158,7 @@ const Requisition: FC<{}> = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requisition),
     };
-    console.log(requisition); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+    // console.log(requisition); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
 
     fetch(apiUrl, requestOptions)
       .then(response => response.json())
@@ -185,9 +201,9 @@ const Requisition: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>ชื่อยา</InputLabel>
                 <Select
-                  name="drug"
+                  name="Drug"
                   label="ชื่อยา"
-                  value={requisition.drug || ''}
+                  value={requisition.Drug || ''}
                   onChange={handleChange}
                 >
                   {drugs.map(item => {
@@ -205,9 +221,9 @@ const Requisition: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.formControl} >
                 <InputLabel>คลังยา</InputLabel>
                 <Select
-                  name="registerstore"
+                  name="Registerstore"
                   label="คลังยา"
-                  value={requisition.registerstore || ''}
+                  value={requisition.Registerstore || ''}
                   onChange={handleChange}
                 >
                   {registerstores.map(item => {
@@ -225,13 +241,14 @@ const Requisition: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.textField} >
                 {/* <form className={classes.textField} noValidate autoComplete="off"> */}
                 <TextField
-                  name="amount"
+                  name="Amount"
                   label="จำนวนยา"
+                  id="Amount"
+                  type="number"
+                  value={requisition.Amount || ''}
 
-                  type="Int"
-                  value={requisition.amount || ''}
+                  onChange={handleAmountChange}
 
-                  onChange={handleChange}
                 />
                 {/* </form> */}
               </FormControl>
@@ -242,15 +259,16 @@ const Requisition: FC<{}> = () => {
 
               {/* <form className={classes.container} noValidate> */}
               <TextField
-                name="added"
-                label="วันที่"
+
+                name="Added"
+                label="วันที่-เวลา"
                 type="datetime-local"
-                value={requisition.added || ''} // (undefined || '') = ''
+                value={requisition.Added || ''} // (undefined || '') = ''
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={handleChange}
+                onChange={handleDateChange}
               />
               {/* </form> */}
             </Grid>
@@ -260,9 +278,9 @@ const Requisition: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>ชื่อเภสัชกร</InputLabel>
                 <Select
-                  name="user"
+                  name="User"
                   label="ชื่อเภสัชกร"
-                  value={requisition.user || ''}
+                  value={requisition.User || ''}
                   onChange={handleChange}
                 >
                   {users.map(item => {

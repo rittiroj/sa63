@@ -9,9 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { DefaultApi } from '../../api/apis';
-import { EntDrug } from '../../api/models/EntDrug';
-import { EntUser } from '../../api/models/EntUser';
-import { EntRegisterStore } from '../../api/models/EntRegisterStore';
+import { EntRequisition } from '../../api/models/EntRequisition';
+
+
 
 
 
@@ -24,63 +24,54 @@ const useStyles = makeStyles({
 
 export default function ComponentsTable() {
   const classes = useStyles();
-  const api = new DefaultApi();
-  const [drugs, setDrugs] = useState<EntDrug[]>([]);
-  const [users, setUsers] = useState<EntUser[]>([]);
-  const [registerstores, setRegisterStore] = useState<EntRegisterStore[]>([]);
+  const http = new DefaultApi();
+  const [requisitions, setRequisitions] = useState<EntRequisition[]>([]);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getDrugs = async () => {
-      const res = await api.listDrug({ limit: 10, offset: 0 });
+    const createRequisitions = async () => {
+      const res = await http.listRequisition({ limit: 10, offset: 0 });
       setLoading(false);
-      setDrugs(res);
-
-
+      setRequisitions(res);
     };
-    getDrugs();
+    createRequisitions();
   }, [loading]);
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const res = await api.listUser({ limit: 10, offset: 0 });
-      setLoading(false);
-      setUsers(res);
-
-    };
-    getUsers();
-  }, [loading]);
-
-  useEffect(() => {
-    const getRegisterStore = async () => {
-      const res = await api.listUser({ limit: 10, offset: 0 });
-      setLoading(false);
-      setRegisterStore(res);
-    };
-    getRegisterStore();
-  }, [loading]);
+  const deleteRequisitions = async (id: number) => {
+    const res = await http.deleteRequisition({ id: id });
+    setLoading(true);
+  };
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            { <TableCell align="center">ชื่อเภสัช</TableCell> }
+            <TableCell align="center">No.</TableCell>
+            <TableCell align="center">จำนวนยา</TableCell>
+            <TableCell align="center">วันที่-เวลา</TableCell>
             <TableCell align="center">ชื่อยา</TableCell>
-            { <TableCell align="center">จำนวนยา</TableCell>}
-            <TableCell align="center">เภสัชกร</TableCell>
+            {/* <TableCell align="center">Title</TableCell> */}
+            <TableCell align="center">ชื่อคลังยา</TableCell>
+            <TableCell align="center">ชื่อเภสัชกร</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
-          {drugs.map(item => (
+          {requisitions.map(item => (
             <TableRow key={item.id}>
-              <TableCell align="center">{item.name}</TableCell>
-              {/* {<TableCell align="center">{item.value}</TableCell> } */}
-
+              <TableCell align="center">{item.id}</TableCell>
+              {/* <TableCell align="center">{item.title}</TableCell> */}
+              <TableCell align="center">{item.amount}</TableCell>
+              <TableCell align="center">{item.addedTime}</TableCell>
+              {/* <TableCell align="center">{item.drug}</TableCell> */}
+              {/* <TableCell align="center">{item.addedTime}</TableCell> */}
               <TableCell align="center">
                 <Button
-                  onClick={() => { }}
+                  onClick={() => {
+                    deleteRequisitions(item.n);
+                  }}
                   style={{ marginLeft: 10 }}
                   variant="contained"
                   color="secondary"
