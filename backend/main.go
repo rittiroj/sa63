@@ -96,9 +96,9 @@ func main() {
 	// Set Drug Data
 	drugs := Drugs{
 		Drug: []Drug{
-			Drug{"para"},
+			Drug{"Aspirin"},
 			Drug{"ยาแก้ไอ"},
-			Drug{"ยาแกเปวด"},
+			Drug{"Paracetamol"},
 		},
 	}
 	for _, d := range drugs.Drug {
@@ -126,8 +126,8 @@ func main() {
 	// Set Users Data
 	users := Users{
 		User: []User{
-			User{"puzk dtealz", "pp@gmail.com", "asdwqe"},
-			User{"kuma rate", "me@example.com", "puzk"},
+			User{"ภก.กฐิน ฉันทา ", "Katin@gmail.com", "katin12345"},
+			User{"ภกญ.จำปา แก่นหอม", "่jp@hotmail.com", "jp2345"},
 		},
 	}
 

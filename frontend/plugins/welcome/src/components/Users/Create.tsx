@@ -73,7 +73,7 @@ interface requisition {
   Registerstore: number;
   Drug: number;
   Amount: number;
-  Added_time: Date;
+  Added: String;
 }
 
 const Requisition: FC<{}> = () => {
@@ -85,6 +85,7 @@ const Requisition: FC<{}> = () => {
   const [registerstores, setRegisterstores] = React.useState<EntRegisterStore[]>([]);
   const [users, setUsers] = React.useState<EntUser[]>([]);
   // const [alert, setAlert] = React.useState(true);
+
 
   // alert setting
   const Toast = Swal.mixin({
@@ -108,7 +109,7 @@ const Requisition: FC<{}> = () => {
     // console.log(requisition);
   };
   const handleDateChange = (
-    event: React.ChangeEvent<{ name: string; value: unknown }>,) => {
+    event: React.ChangeEvent<{ name: string; value: string }>,) => {
     const name = event.target.name as keyof typeof Requisition;
     const { value } = event.target;
     console.log('date select: ', value, typeof value) // show date from event.target.value
@@ -154,6 +155,7 @@ const Requisition: FC<{}> = () => {
   }
 
   function save() {
+    requisition.Added += ":00+07:00";
     const apiUrl = 'http://localhost:8080/api/v1/requisitions';
     const requestOptions = {
       method: 'POST',
@@ -168,7 +170,6 @@ const Requisition: FC<{}> = () => {
       .then(response => response.json())
       .then(data => {
         // setRequisition({ ...requisition, Added: requisition.Added });
-
         // console.log(added_time)
         console.log(data); // last data
         // alert(JSON.stringify(requisition))
@@ -267,10 +268,10 @@ const Requisition: FC<{}> = () => {
 
               {/* <form className={classes.container} noValidate> */}
               <TextField
-                name="Added_time"
+                name="Added"
                 label="วันที่-เวลา"
                 type="datetime-local"
-                value={requisition.Added_time || ''} // (undefined || '') = ''
+                value={requisition.Added || ''} // (undefined || '') = ''
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,

@@ -10,11 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { DefaultApi } from '../../api/apis';
 import { EntRequisition } from '../../api/models/EntRequisition';
-
-
-
-
-
+import moment from 'moment';
 
 const useStyles = makeStyles({
   table: {
@@ -26,16 +22,15 @@ export default function ComponentsTable() {
   const classes = useStyles();
   const http = new DefaultApi();
   const [requisitions, setRequisitions] = useState<EntRequisition[]>([]);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const createRequisitions = async () => {
+    const getRequisitions = async () => {
       const res = await http.listRequisition({ limit: 10, offset: 0 });
       setLoading(false);
       setRequisitions(res);
     };
-    createRequisitions();
+    getRequisitions();
   }, [loading]);
 
   const deleteRequisitions = async (id: number) => {
@@ -49,28 +44,26 @@ export default function ComponentsTable() {
         <TableHead>
           <TableRow>
             <TableCell align="center">No.</TableCell>
+            <TableCell align="center">ชื่อยา</TableCell>
+            <TableCell align="center">ชื่อคลังยา</TableCell>
             <TableCell align="center">จำนวนยา</TableCell>
             <TableCell align="center">วันที่-เวลา</TableCell>
-            <TableCell align="center">ชื่อยา</TableCell>
-            {/* <TableCell align="center">Title</TableCell> */}
-            <TableCell align="center">ชื่อคลังยา</TableCell>
             <TableCell align="center">ชื่อเภสัชกร</TableCell>
-
           </TableRow>
         </TableHead>
         <TableBody>
           {requisitions.map(item => (
             <TableRow key={item.id}>
               <TableCell align="center">{item.id}</TableCell>
-              {/* <TableCell align="center">{item.title}</TableCell> */}
+              <TableCell align="center">{item.edges?.drug?.name}</TableCell>
+              <TableCell align="center">{item.edges?.registerstore?.name}</TableCell>
               <TableCell align="center">{item.amount}</TableCell>
-              <TableCell align="center">{item.addedTime}</TableCell>
-              {/* <TableCell align="center">{item.drug}</TableCell> */}
-              {/* <TableCell align="center">{item.addedTime}</TableCell> */}
+              <TableCell align="center">{moment(item.addedTime).format('DD/MM/YYYY HH:mm')}</TableCell>
+              <TableCell align="center">{item.edges?.user?.name}</TableCell>
               <TableCell align="center">
                 <Button
                   onClick={() => {
-                    deleteRequisitions(item.n);
+                    deleteRequisitions(item.id);
                   }}
                   style={{ marginLeft: 10 }}
                   variant="contained"

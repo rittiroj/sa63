@@ -64,9 +64,9 @@ export function EntRequisitionEdgesFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'drug': !exists(json, 'drug') ? undefined : EntDrugFromJSON(json['drug']),
-        'registerstore': !exists(json, 'registerstore') ? undefined : EntRegisterStoreFromJSON(json['registerstore']),
-        'user': !exists(json, 'user') ? undefined : EntUserFromJSON(json['user']),
+        'drug': !exists(json, 'Drug') ? undefined : EntDrugFromJSON(json['Drug']),
+        'registerstore': !exists(json, 'Registerstore') ? undefined : EntRegisterStoreFromJSON(json['Registerstore']),
+        'user': !exists(json, 'User') ? undefined : EntUserFromJSON(json['User']),
     };
 }
 
