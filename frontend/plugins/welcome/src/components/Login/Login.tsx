@@ -1,10 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useReducer } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { EntUser } from '../../api/models/EntUser';
+import { EntUser, EntUserFromJSON } from '../../api/models/EntUser';
 import {
   // Content,
   Header,
@@ -13,6 +13,7 @@ import {
   // ContentHeader,
 } from '@backstage/core';
 import { DefaultApi } from '../../api';
+import User from '../Users';
 
 const HeaderCustom = {
   minHeight: '120px',
@@ -34,34 +35,132 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// interface user {
-//   email: string;
-//   password: string;
-// }
+interface State {
+  email: string;
+  password: string;
+  isButtonDisabled: boolean
+  helperText: string
+  isError: boolean
+}
 
-const SignIn: FC<{}> = () => {
+const initialState: State = {
+  email: '',
+  password: '',
+  isButtonDisabled: true,
+  helperText: '',
+  isError: false,
+}
+
+type Action = { type: 'setEmail', payload: string }
+  | { type: 'setPassword', payload: string }
+  | { type: 'setIsButtonDisabled', payload: boolean }
+  | { type: 'loginSuccess', payload: string }
+  | { type: 'loginFailed', payload: string }
+  | { type: 'setIsError', payload: boolean };
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'setEmail':
+      return {
+        ...state,
+        email: action.payload
+      };
+    case 'setPassword':
+      return {
+        ...state,
+        password: action.payload
+      };
+    case 'setIsButtonDisabled':
+      return {
+        ...state,
+        isButtonDisabled: action.payload
+      };
+    case 'loginSuccess':
+      return {
+        ...state,
+        helperText: action.payload,
+        isError: false
+      };
+    case 'loginFailed':
+      return {
+        ...state,
+        helperText: action.payload,
+        isError: true
+      };
+    case 'setIsError':
+      return {
+        ...state,
+        isError: action.payload
+      };
+  }
+}
+
+
+const Login = () => {
   const classes = useStyles();
-  const http = new DefaultApi();
-  // const [users, setUsers] = React.useState<EntUser[]>([])
-  const [email, setEmail] = React.useState<EntUser[]>([]);
-  const [password, setPassword] = React.useState<EntUser[]>([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [user, ] = React.useState<EntUser[]>([]);
+  const [password, getPassword] = React.useState<EntUser[]>([]);
   
-  // const getUsers = async () => {
-  //   const u = await http.listUser({ limit: 10, offset: 0 });
-  //   setUsers(u);
-  // };
-  // useEffect(() => {
-  //   getUsers();
-  // }, []);
+  
+  useEffect(() => {
+    if (state.email.trim() && state.password.trim()) {
+      dispatch({
+        type: 'setIsButtonDisabled',
+        payload: false
+      });
+    } else {
+      dispatch({
+        type: 'setIsButtonDisabled',
+        payload: true
+      });
+    }
+  }, [state.email, state.password]);
 
-  
+  const handleLogin = () => {
+    if ((state.email === 'wannee@gmail.com' && state.password === '12345') ||
+        (state.email === 'raweewan@gmail.com' && state.password === '12345')) {
+      dispatch({
+        type: 'loginSuccess',
+        payload: 'Login Successfully'
+      });
+    } else {
+      dispatch({
+        type: 'loginFailed',
+        payload: 'Incorrect username or password'
+      });
+    }
+  };
+ 
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.keyCode === 13 || event.which === 13) {
+      state.isButtonDisabled || handleLogin();
+    }
+  };
+
+  const handleEmailChange: React.ChangeEventHandler<HTMLInputElement> =
+    (event) => {
+      dispatch({
+        type: 'setEmail',
+        payload: event.target.value
+      });
+    };
+
+  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
+    (event) => {
+      dispatch({
+        type: 'setPassword',
+        payload: event.target.value
+      });
+    }
   return (
     <div className={classes.paper}>
       <Page theme={pageTheme.website}>
         <Header style={HeaderCustom} title={`Medicine Room System`}
           subtitle="กรุณาบันทึกข้อมูลก่อนเข้าสู่ระบบ">
         </Header>
-        <form className = {classes.submit} noValidate> 
+        <form className={classes.submit} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -72,8 +171,10 @@ const SignIn: FC<{}> = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            value={email}
-           
+            onChange={handleEmailChange}
+            onKeyPress={handleKeyPress}
+
+
           />
           <TextField
             variant="outlined"
@@ -85,18 +186,24 @@ const SignIn: FC<{}> = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={password}
-            
+            helperText={state.helperText}
+            onChange={handlePasswordChange}
+            onKeyPress={handleKeyPress}
           />
           <Button
+
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            
-          >
+            onClick={handleLogin}
+            disabled={state.isButtonDisabled}
+            href="/user"
+            >
+              
             Sign In
+            
           </Button>
           <Grid container>
             <Grid item>
@@ -110,4 +217,4 @@ const SignIn: FC<{}> = () => {
     </div>
   );
 };
-export default SignIn;
+export default Login;

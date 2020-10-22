@@ -13,16 +13,16 @@ import {
 } from '@backstage/core';
 
 const WelcomePage: FC<{}> = () => {
-  const profile = { givenName: 'to System Analysis and Design 63' };
+  const profile = { givenName: 'ห้องยา' };
 
   return (
     <Page theme={pageTheme.home}>
       <Header
-        title={`Welcome ${profile.givenName || 'to Backstage'}`}
-        subtitle="Some quick intro and links."
+        title={`ระบบ${profile.givenName || ''}`}
+        subtitle="ระบบเบิกยาจากคลังสำหรับห้องยา."
       ></Header>
       <Content>
-        <ContentHeader title="Application CRUD">
+        <ContentHeader title="บันทึกรายการเบิกยาจากคลังสำหรับห้องยา">
           <Link component={RouterLink} to="/user">
             <Button variant="contained" color="primary">
               เพิ่มข้อมูล

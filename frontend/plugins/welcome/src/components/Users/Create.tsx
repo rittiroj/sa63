@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1,
-      marginTop: '5%',
+      
     },
     Bottom: {
       minWidth: 300,
@@ -190,12 +190,16 @@ const Requisition: FC<{}> = () => {
 
   return (
     <div className={classes.root}>
-
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.root}>
+          <Typography variant="h6" className={classes.title}>
             ระบบเบิกยาจากคลังสำหรับห้องยา
             </Typography>
+            <Typography variant="h6" className={classes.title}>
+          {/* <div style={{ marginLeft: 50 }}>ไทยแลนด์ อิอิ</div> */}
+ 
+          </Typography>
+          
         </Toolbar>
       </AppBar>
 
