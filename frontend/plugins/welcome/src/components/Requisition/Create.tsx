@@ -196,10 +196,8 @@ const Requisition: FC<{}> = () => {
             ระบบเบิกยาจากคลังสำหรับห้องยา
             </Typography>
           <Typography variant="h6" className={classes.title}>
-            {/* <div style={{ marginLeft: 50 }}>ไทยแลนด์ อิอิ</div> */}
-
           </Typography>
-
+          <Button color="inherit" href="/">Logout </Button>
         </Toolbar>
       </AppBar>
 
