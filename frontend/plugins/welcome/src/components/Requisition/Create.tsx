@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1,
-      
+
     },
     Bottom: {
       minWidth: 300,
@@ -92,7 +92,7 @@ const Requisition: FC<{}> = () => {
     toast: true,
     position: 'center',
     showConfirmButton: false,
-    timer: 2000,
+    timer: 1500,
     timerProgressBar: true,
     didOpen: toast => {
       toast.addEventListener('mouseenter', Swal.stopTimer);
@@ -195,11 +195,11 @@ const Requisition: FC<{}> = () => {
           <Typography variant="h6" className={classes.title}>
             ระบบเบิกยาจากคลังสำหรับห้องยา
             </Typography>
-            <Typography variant="h6" className={classes.title}>
-          {/* <div style={{ marginLeft: 50 }}>ไทยแลนด์ อิอิ</div> */}
- 
+          <Typography variant="h6" className={classes.title}>
+            {/* <div style={{ marginLeft: 50 }}>ไทยแลนด์ อิอิ</div> */}
+
           </Typography>
-          
+
         </Toolbar>
       </AppBar>
 
@@ -259,7 +259,6 @@ const Requisition: FC<{}> = () => {
                   id="Amount"
                   type="number"
                   value={requisition.Amount || ''}
-
                   onChange={handleAmountChange}
 
                 />
